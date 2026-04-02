@@ -19,7 +19,7 @@ public class FilmeDTO {
     private Long id;
 
     @NotBlank(message = "O título é obrigatório")
-    @Size(min=3, max=120, message = "O Título do filnme precisa ter entre 3 e 120 caracteres!")
+    @Size(min=3, max=120, message = "O Título do filme precisa ter entre 3 e 120 caracteres!")
     private String titulo;
 
     @NotBlank(message = "A sinopse do filme é obrigatória!")
