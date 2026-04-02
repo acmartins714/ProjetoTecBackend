@@ -34,7 +34,7 @@ public class Assinatura {
     @Column(name = "iniciada_em", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDate iniciadaEm;
 
-    @Column(name = "cancelada_em", nullable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "cancelada_em", columnDefinition = "TIMESTAMP")
     private LocalDate canceladaEm;
 
 }

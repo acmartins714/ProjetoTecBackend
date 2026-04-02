@@ -1,0 +1,43 @@
+package br.uniesp.si.techback.dto;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
+
+import java.time.LocalDate;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class AssinaturaDTO {
+
+    private Long id;
+
+    @NotBlank(message = "A identificação do usuário é obrigatória")
+    @Range(min=1, message = "Só são perminitidos números positivos para identificação do usuário!")
+    private Long usuarioId;
+
+    @NotBlank(message = "A identificação do plano é obrigatória")
+    @Range(min=1, message = "Só são perminitidos números positivos para identificação do plano!")
+    private Long planoId;
+
+    @NotBlank(message = "O Status da assinatura deve ser informado!")
+    @Pattern(regexp = "ATIVA|EM_ATRASO|CANCELADA", message = "Este campo aceita apenas os seguintes valores: ATIVA | EM_ATRASO | CANCELADA!")
+    private String status;
+
+    @NotBlank(message = "A data de inicio da vigência da assinatura é obrigatória!")
+    private LocalDate iniciadaEm;
+
+    private LocalDate canceladaEm;
+
+}
