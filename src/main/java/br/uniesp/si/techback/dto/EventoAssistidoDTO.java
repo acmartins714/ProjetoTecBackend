@@ -1,6 +1,8 @@
 package br.uniesp.si.techback.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,13 +16,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class EventoAssistidoDTO {
 
-    @NotBlank(message = "A identificação do usuário deve ser informada!")
+    @NotNull(message = "A identificação do usuário deve ser informada!")
     private Long usuarioId;
 
-    @NotBlank(message = "A identificação do conteúdo deve ser informada!")
+    @NotNull(message = "A identificação do conteúdo deve ser informada!")
     private Long conteudoId;
 
-    @NotBlank(message = "A data em que o conteúdo foi assistido deve ser informada!")
+    @NotNull(message = "A data em que o conteúdo foi assistido deve ser informada!")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate assistidoEm;
 
 }

@@ -7,9 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -27,14 +29,16 @@ public class Conteudo {
     @Column(name = "titulo", nullable = false, length = 200)
     private String titulo;
 
-    @Column(name = "tipo", nullable = false, columnDefinition = "CHAR(10) CONSTRAINT ck_conteudo_tipo CHECK(tipo in ('FILME','SERIE'))", length = 10)
+    @Column(name = "tipo", nullable = false, columnDefinition = "CHAR(10)", length = 10)
     @Pattern(regexp = "FILME|SERIE", message = "Este campo só aceita os valores FILME e SERIE!")
     private String tipo;
 
-    @Column(name = "ano", nullable = false, columnDefinition = "SMALLINT CONSTRAINT ck_conteudo_ano CHECK(ano BETWEEN 1888 AND 2100)")
+    @Column(name = "ano", nullable = false, columnDefinition = "SMALLINT")
+    @Range(min = 1888, max = 2100)
     private int ano;
 
-    @Column(name = "duracao_minutos", nullable = false, columnDefinition = "SMALLINT CONSTRAINT ck_conteudo_duracao_minutos CHECK(duracao_minutos BETWEEN 1 AND 999)")
+    @Column(name = "duracao_minutos", nullable = false, columnDefinition = "SMALLINT")
+    @Range(min = 1, max = 999)
     private int duracaoMinutos;
 
     @Column(name = "relevancia", nullable = false, columnDefinition = "NUMBER(4,2)")
@@ -51,9 +55,9 @@ public class Conteudo {
     private String genero;
 
     @Column(name = "criado_em", columnDefinition = "TIMESTAMP")
-    private LocalDate criadoEm;
+    private LocalDateTime criadoEm;
 
     @Column(name = "atualizado_em", columnDefinition = "TIMESTAMP")
-    private LocalDate atualizadoEm;
+    private LocalDateTime atualizadoEm;
 
 }
