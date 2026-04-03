@@ -1,5 +1,7 @@
 package br.uniesp.si.techback.dto;
 
+import br.uniesp.si.techback.model.Funcionario;
+import br.uniesp.si.techback.model.MetodoPagamento;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -43,5 +45,17 @@ public class MetodoPagamentoDTO {
     @NotBlank(message = "A data da criação precisa estar preencida!")
     @Column(name = "criado_em", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDate criadoEm;
+
+    public MetodoPagamentoDTO(MetodoPagamento entity) {
+        id = entity.getId();
+        usuarioId = entity.getUsuarioId();
+        bandeira = entity.getBandeira();
+        ultimos4 = entity.getUltimos4();
+        mesExp = entity.getMesExp();
+        anoExp = entity.getAnoExp();
+        nomePortador = entity.getNomePortador();
+        tokenGateway = entity.getTokenGateway();
+        criadoEm = entity.getCriadoEm();
+    }
 
 }

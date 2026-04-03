@@ -29,10 +29,4 @@ public class FuncionarioDTO {
     @Size(min=3, max=80, message = "Nome precisa ter entre 3 e 50 caracters!")
     private String cargo;
 
-    public FuncionarioDTO(Funcionario entity) {
-        id = entity.getId();
-        nome = entity.getNome();
-        cargo = entity.getCargo();
-    }
-
 }

@@ -1,5 +1,7 @@
 package br.uniesp.si.techback.dto;
 
+import br.uniesp.si.techback.model.MetodoPagamento;
+import br.uniesp.si.techback.model.Plano;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,5 +24,6 @@ public class PlanoDTO {
 
     @NotBlank(message = "A quantidade de acessos simultaneos do plano deve ser informada!")
     private int streams_simultaneos;
+
 
 }

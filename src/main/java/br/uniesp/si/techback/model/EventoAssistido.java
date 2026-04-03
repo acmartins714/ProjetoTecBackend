@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "favorito")
-@IdClass(FavoritoId.class)
+@Table(name = "evento_assistido")
+@IdClass(EventoAssistidoId.class)
 public class EventoAssistido {
 
     @Id

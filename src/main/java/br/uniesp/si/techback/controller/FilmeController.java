@@ -1,10 +1,13 @@
 package br.uniesp.si.techback.controller;
 
 import br.uniesp.si.techback.dto.FilmeDTO;
+import br.uniesp.si.techback.dto.FuncionarioDTO;
 import br.uniesp.si.techback.service.FilmeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,6 +29,12 @@ public class FilmeController {
         List<FilmeDTO> filmes = filmeService.listar();
         log.debug("Total de filmes encontrados: {}", filmes.size());
         return filmes;
+    }
+
+    @GetMapping("/listapaginada")
+    public ResponseEntity<Page<FilmeDTO>> findAll(Pageable pageable) {
+        Page<FilmeDTO> dto = filmeService.listaPaginada(pageable);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/{id}")

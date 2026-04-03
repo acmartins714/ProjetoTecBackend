@@ -1,10 +1,10 @@
 package br.uniesp.si.techback.repository;
 
-import br.uniesp.si.techback.model.Filme;
+import br.uniesp.si.techback.model.EventoAssistido;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EventoAssistidoRepository extends JpaRepository<Filme, Long> {
+public interface EventoAssistidoRepository extends JpaRepository<EventoAssistido, Long> {
 
 }

@@ -32,7 +32,7 @@ public class FuncionarioController {
 
     @GetMapping("/listapaginada")
     public ResponseEntity<Page<FuncionarioDTO>> findAll(Pageable pageable) {
-        Page<FuncionarioDTO> dto = funcionarioService.findAll(pageable);
+        Page<FuncionarioDTO> dto = funcionarioService.listarPaginado(pageable);
         return ResponseEntity.ok(dto);
     }
 

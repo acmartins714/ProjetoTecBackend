@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,23 +23,33 @@ public class FuncionarioService {
     private final FuncionarioMapper funcionarioMapper;
 
     public List<FuncionarioDTO> listar() {
-        log.info("Buscando todos os funcionarios cadastrados");
+        log.info("Buscando todos os funcionários cadastrados");
         try {
             List<Funcionario> funcionarios = funcionarioRepository.findAll();
             List<FuncionarioDTO> funcionariosDTO = funcionarios.stream()
                     .map(funcionarioMapper::toDTO)
                     .collect(Collectors.toList());
-            log.debug("Total de funcionarios encontrados: {}", funcionariosDTO.size());
+            log.debug("Total de funcionários encontrados: {}", funcionariosDTO.size());
             return funcionariosDTO;
         } catch (Exception e) {
-            log.error("Falha ao buscar funcionarios: {}", e.getMessage(), e);
+            log.error("Falha ao buscar funcionários: {}", e.getMessage(), e);
             throw e;
         }
     }
 
-    public Page<FuncionarioDTO> findAll(Pageable pageable) {
+    /**
+     * @param pageable o json
+     *  {
+     *   "page": 0,
+     *   "size": 5,
+     *   "sort": "@param1, @param2, [descending]"
+     *  }
+     * @return lista de funcionarios paginada, ou lança uma exceção {@link RuntimeException}
+     * se não existir algum funcionário cadastrado.
+    */
+    public Page<FuncionarioDTO> listarPaginado(Pageable pageable) {
         Page<Funcionario> result = funcionarioRepository.findAll(pageable);
-        return result.map(x -> new FuncionarioDTO(x));
+        return result.map(x -> new FuncionarioMapper().toDTO(x));
     }
 
     /**

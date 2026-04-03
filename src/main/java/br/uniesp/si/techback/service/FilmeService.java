@@ -1,12 +1,17 @@
 package br.uniesp.si.techback.service;
 
 import br.uniesp.si.techback.dto.FilmeDTO;
+import br.uniesp.si.techback.dto.FuncionarioDTO;
 import br.uniesp.si.techback.mapper.FilmeMapper;
+import br.uniesp.si.techback.mapper.PlanoMapper;
 import br.uniesp.si.techback.model.Filme;
+import br.uniesp.si.techback.model.Funcionario;
 import br.uniesp.si.techback.repository.FilmeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +38,21 @@ public class FilmeService {
             log.error("Falha ao buscar filmes: {}", e.getMessage(), e);
             throw e;
         }
+    }
+
+    /**
+     * @param pageable o json
+     *  {
+     *   "page": 0,
+     *   "size": 5,
+     *   "sort": "@param1, @param2, [descending]"
+     *  }
+     * @return lista de filmes paginada, ou lança uma exceção {@link RuntimeException}
+     * se não existir algum filme cadastrado.
+     */
+    public Page<FilmeDTO> listaPaginada(Pageable pageable) {
+        Page<Filme> result = filmeRepository.findAll(pageable);
+        return result.map(x -> new FilmeMapper().toDTO(x));
     }
 
     /**
