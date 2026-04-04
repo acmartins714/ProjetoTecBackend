@@ -1,12 +1,15 @@
 package br.uniesp.si.techback.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -14,18 +17,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "evento_assistido")
-@IdClass(EventoAssistidoId.class)
 public class EventoAssistido {
 
-    @Id
-    @Column(name = "usuario_id", nullable = false)
-    private Long usuarioId;
-
-    @Id
-    @Column(name = "conteudo_id", nullable = false)
-    private Long conteudoId;
+    @EmbeddedId
+    private EventoAssistidoId eventoAssistidoId;
 
     @Column(name = "assistido_em", nullable = false, columnDefinition = "TIMESTAMP")
-    private LocalDate assistidoEm;
+    private LocalDateTime assistidoEm;
 
 }

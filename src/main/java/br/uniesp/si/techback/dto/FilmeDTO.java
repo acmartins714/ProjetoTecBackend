@@ -1,6 +1,8 @@
 package br.uniesp.si.techback.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,13 +27,14 @@ public class FilmeDTO {
     @NotBlank(message = "A sinopse do filme é obrigatória!")
     private String sinopse;
 
-    @NotBlank(message = "A data de lançamento do filme é obrigatória!")
+    @NotNull(message = "A data de lançamento do filme é obrigatória!")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataLancamento;
 
     @NotBlank(message = "O gênero do filme é obigatório!")
     private String genero;
 
-    @NotBlank(message = "O tempo de duração do Filme / Documentário é obigatório!")
+    @NotNull(message = "O tempo de duração do Filme / Documentário é obigatório!")
     private Integer duracaoMinutos;
 
     @NotBlank(message = "A classificação indicativa do Filme / Documentário é obigatória!")

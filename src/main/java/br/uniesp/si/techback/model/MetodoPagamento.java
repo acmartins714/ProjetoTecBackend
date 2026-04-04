@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -29,7 +29,7 @@ public class MetodoPagamento {
     @Column(name = "ultimos4", nullable = false, columnDefinition = "CHAR(4)", length = 4)
     private String ultimos4;
 
-    @Column(name = "mes_exp", nullable = false, columnDefinition = "SMALLINT CONSTRAINT ck_metodo_pagamento_mes_exp CHECK(mes_exp BETWEEN 1 AND 12)")
+    @Column(name = "mes_exp", nullable = false, columnDefinition = "SMALLINT")
     private int mesExp;
 
     @Column(name = "ano_exp", nullable = false, columnDefinition = "SMALLINT")
@@ -42,6 +42,6 @@ public class MetodoPagamento {
     private String tokenGateway;
 
     @Column(name = "criado_em", nullable = false, columnDefinition = "TIMESTAMP")
-    private LocalDate criadoEm;
+    private LocalDateTime criadoEm;
 
 }

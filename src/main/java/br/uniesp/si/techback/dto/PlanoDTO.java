@@ -1,8 +1,7 @@
 package br.uniesp.si.techback.dto;
 
-import br.uniesp.si.techback.model.MetodoPagamento;
-import br.uniesp.si.techback.model.Plano;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,10 +18,10 @@ public class PlanoDTO {
     @NotBlank(message = "O código do plano deve ser informado!")
     private String codigo;
 
-    @NotBlank(message = "O limite diário de utilização do plano deve ser informado!")
+    @NotNull(message = "O limite diário de utilização do plano deve ser informado!")
     private int limiteDiario;
 
-    @NotBlank(message = "A quantidade de acessos simultaneos do plano deve ser informada!")
+    @NotNull(message = "A quantidade de acessos simultaneos do plano deve ser informada!")
     private int streams_simultaneos;
 
 

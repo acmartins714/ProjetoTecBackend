@@ -13,8 +13,7 @@ public class FavoritoMapper {
         }
         
         Favorito favorito = new Favorito();
-        favorito.setUsuarioId(dto.getUsuarioId());
-        favorito.setConteudoId(dto.getUsuarioId());
+        favorito.setFavoritoId(dto.getFavoritoId());
         favorito.setCriadoEm(dto.getCriadoEm());
 
         return favorito;
@@ -26,8 +25,7 @@ public class FavoritoMapper {
         }
         
         FavoritoDTO dto = new FavoritoDTO();
-        dto.setUsuarioId(entity.getUsuarioId());
-        dto.setConteudoId(entity.getConteudoId());
+        dto.setFavoritoId(entity.getFavoritoId());
         dto.setCriadoEm(entity.getCriadoEm());
 
         return dto;

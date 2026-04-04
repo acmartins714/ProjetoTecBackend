@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -32,9 +33,9 @@ public class Assinatura {
     private String status;
 
     @Column(name = "iniciada_em", nullable = false, columnDefinition = "TIMESTAMP")
-    private LocalDate iniciadaEm;
+    private LocalDateTime iniciadaEm;
 
     @Column(name = "cancelada_em", columnDefinition = "TIMESTAMP")
-    private LocalDate canceladaEm;
+    private LocalDateTime canceladaEm;
 
 }

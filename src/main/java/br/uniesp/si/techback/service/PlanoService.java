@@ -37,7 +37,17 @@ public class PlanoService {
         }
     }
 
-    public Page<PlanoDTO> findAll(Pageable pageable) {
+    /**
+     * @param pageable o json
+     *  {
+     *   "page": 0,
+     *   "size": 5,
+     *   "sort": "@param1, @param2, [descending]"
+     *  }
+     * @return lista de assinaturas paginada, ou lança uma exceção {@link RuntimeException}
+     * se não existir alguma assinatura cadastrado.
+     */
+    public Page<PlanoDTO> listaPaginada(Pageable pageable) {
         Page<Plano> result = planoRepository.findAll(pageable);
         return result.map(x -> new PlanoMapper().toDTO(x));
     }

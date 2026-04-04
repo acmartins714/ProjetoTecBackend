@@ -7,6 +7,8 @@ import br.uniesp.si.techback.repository.AssinaturaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +35,21 @@ public class AssinaturaService {
             log.error("Falha ao buscar assinaturas: {}", e.getMessage(), e);
             throw e;
         }
+    }
+
+    /**
+     * @param pageable o json
+     *  {
+     *   "page": 0,
+     *   "size": 5,
+     *   "sort": "@param1, @param2, [descending]"
+     *  }
+     * @return lista de assinaturas paginada, ou lança uma exceção {@link RuntimeException}
+     * se não existir alguma assinatura cadastrado.
+     */
+    public Page<AssinaturaDTO> listaPaginada(Pageable pageable) {
+        Page<Assinatura> result = assinaturaRepository.findAll(pageable);
+        return result.map(x -> new AssinaturaMapper().toDTO(x));
     }
 
     /**
@@ -112,7 +129,7 @@ public class AssinaturaService {
     public void excluir(Long id) {
         log.info("Excluindo assinatura ID: {}", id);
         if (!assinaturaRepository.existsById(id)) {
-            String mensagem = String.format("Falha ao excluir: assinatura não encontrado com o ID: %d", id);
+            String mensagem = String.format("Falha ao excluir: assinatura não encontrada com o ID: %d", id);
             log.warn(mensagem);
             throw new RuntimeException(mensagem);
         }

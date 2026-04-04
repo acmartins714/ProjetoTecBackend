@@ -7,6 +7,8 @@ import br.uniesp.si.techback.repository.ConteudoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,18 +38,33 @@ public class ConteudoService {
     }
 
     /**
+     * @param pageable o json
+     *  {
+     *   "page": 0,
+     *   "size": 5,
+     *   "sort": "@param1, @param2, [descending]"
+     *  }
+     * @return lista de conteúdos paginada, ou lança uma exceção {@link RuntimeException}
+     * se não existir algum conteúdo cadastrado.
+     */
+    public Page<ConteudoDTO> listaPaginada(Pageable pageable) {
+        Page<Conteudo> result = conteudoRepository.findAll(pageable);
+        return result.map(x -> new ConteudoMapper().toDTO(x));
+    }
+
+    /**
      * @param id o ID do conteudo.
      * @return o conteudo encontrado, ou lança uma exceção {@link RuntimeException} se o conteudo não existir.
      */
     public ConteudoDTO buscarPorId(Long id) {
-        log.info("Buscando conteudo pelo ID: {}", id);
+        log.info("Buscando conteudo pelo ID: {}!", id);
         Conteudo conteudo = conteudoRepository.findById(id)
                 .map(conteudoEncontrado -> {
-                    log.debug("Conteúdo encontrado: ID={}, Título={}", conteudoEncontrado.getId(), conteudoEncontrado.getTitulo());
+                    log.debug("Conteúdo encontrado: ID={}, Título={}!", conteudoEncontrado.getId(), conteudoEncontrado.getTitulo());
                     return conteudoEncontrado;
                 })
                 .orElseThrow(() -> {
-                    String mensagem = String.format("Conteúdo não encontrado com o ID: %d", id);
+                    String mensagem = String.format("Conteúdo não encontrado com o ID: %d!", id);
                     log.warn(mensagem);
                     return new RuntimeException(mensagem);
                 });
@@ -76,7 +93,7 @@ public class ConteudoService {
                     return conteudoSalvo;
                 })
                 .orElseThrow(() -> {
-                    String mensagem = String.format("Falha ao atualizar: conteúdo não encontrado com o ID: %d", id);
+                    String mensagem = String.format("Falha ao atualizar: conteúdo não encontrado com o ID: %d!", id);
                     log.warn(mensagem);
                     return new RuntimeException(mensagem);
                 });
@@ -95,10 +112,10 @@ public class ConteudoService {
         try {
             Conteudo conteudo = conteudoMapper.toEntity(conteudoDTO);
             Conteudo conteudoSalvo = conteudoRepository.save(conteudo);
-            log.info("Conteúdo salvo com sucesso. ID: {}, Título: {}", conteudoSalvo.getId(), conteudoSalvo.getTitulo());
+            log.info("Conteúdo salvo com sucesso. ID: {}, Título: {}!", conteudoSalvo.getId(), conteudoSalvo.getTitulo());
             return conteudoMapper.toDTO(conteudoSalvo);
         } catch (Exception e) {
-            log.error("Falha ao salvar conteúdo '{}': {}", conteudoDTO.getTitulo(), e.getMessage(), e);
+            log.error("Falha ao salvar conteúdo '{}': {}!", conteudoDTO.getTitulo(), e.getMessage(), e);
             throw e;
         }
     }
@@ -112,13 +129,13 @@ public class ConteudoService {
     public void excluir(Long id) {
         log.info("Excluindo conteudo ID: {}", id);
         if (!conteudoRepository.existsById(id)) {
-            String mensagem = String.format("Falha ao excluir: conteúdo não encontrado com o ID: %d", id);
+            String mensagem = String.format("Falha ao excluir: conteúdo não encontrado com o ID: %d!", id);
             log.warn(mensagem);
             throw new RuntimeException(mensagem);
         }
         try {
             conteudoRepository.deleteById(id);
-            log.info("Conteúdo ID: {} excluído com sucesso", id);
+            log.info("Conteúdo ID: {} excluído com sucesso!", id);
         } catch (Exception e) {
             log.error("Erro ao excluir conteúdo ID {}: {}", id, e.getMessage(), e);
             throw e;

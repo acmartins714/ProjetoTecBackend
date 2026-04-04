@@ -1,14 +1,15 @@
 package br.uniesp.si.techback.dto;
 
+import br.uniesp.si.techback.model.FavoritoId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.EmbeddedId;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -16,15 +17,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FavoritoDTO {
 
-    @NotNull(message = "A identificação do usuário deve ser informada!")
-    private Long usuarioId;
-
-    @NotNull(message = "A identificação do conteúdo deve ser informada!")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Long conteudoId;
+    @EmbeddedId
+    private FavoritoId favoritoId;
 
     @NotNull(message = "A data em que o conteúdo foi favoritado deve ser informada!")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate criadoEm;
+    private LocalDateTime criadoEm;
 
 }

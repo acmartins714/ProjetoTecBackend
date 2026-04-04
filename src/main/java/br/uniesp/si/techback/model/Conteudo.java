@@ -2,7 +2,6 @@ package br.uniesp.si.techback.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -30,7 +28,6 @@ public class Conteudo {
     private String titulo;
 
     @Column(name = "tipo", nullable = false, columnDefinition = "CHAR(10)", length = 10)
-    @Pattern(regexp = "FILME|SERIE", message = "Este campo só aceita os valores FILME e SERIE!")
     private String tipo;
 
     @Column(name = "ano", nullable = false, columnDefinition = "SMALLINT")

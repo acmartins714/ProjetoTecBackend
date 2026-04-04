@@ -24,9 +24,9 @@ public class FuncionarioController {
 
     @GetMapping
     public List<FuncionarioDTO> listar() {
-        log.info("Listando todos os funcionarios");
+        log.info("Listando todos os funcionários");
         List<FuncionarioDTO> funcionarios = funcionarioService.listar();
-        log.debug("Total de funcionarios encontrados: {}", funcionarios.size());
+        log.debug("Total de funcionários encontrados: {}", funcionarios.size());
         return funcionarios;
     }
 
@@ -40,57 +40,57 @@ public class FuncionarioController {
     public ResponseEntity<FuncionarioDTO> buscarPorId(@PathVariable Long id) {
         try {
             FuncionarioDTO funcionario = funcionarioService.buscarPorId(id);
-            log.debug("Funcionario encontrado: {}", funcionario);
+            log.debug("Funcionário encontrado: {}", funcionario);
             return ResponseEntity.ok(funcionario);
         } catch (Exception e) {
-            log.error("Erro ao buscar funcionario com ID {}: {}", id, e.getMessage(), e);
+            log.error("Erro ao buscar funcionário com ID {}: {}", id, e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
     public ResponseEntity<FuncionarioDTO> criar(@Valid @RequestBody FuncionarioDTO funcionarioDTO) {
-        log.info("Recebida requisição para criar novo funcionario: {}", funcionarioDTO.getNome());
+        log.info("Recebida requisição para criar novo funcionário: {}", funcionarioDTO.getNome());
         try {
             FuncionarioDTO funcionarioSalvo = funcionarioService.salvar(funcionarioDTO);
-            log.info("Funcionario criado com sucesso. ID: {}, Título: {}", funcionarioSalvo.getId(), funcionarioSalvo.getNome());
+            log.info("Funcionário criado com sucesso. ID: {}, Título: {}", funcionarioSalvo.getId(), funcionarioSalvo.getNome());
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
                     .buildAndExpand(funcionarioSalvo.getId())
                     .toUri();
-            log.debug("URI de localização do novo funcionario: {}", location);
+            log.debug("URI de localização do novo funcionário: {}", location);
 
             return ResponseEntity.created(location).body(funcionarioSalvo);
         } catch (Exception e) {
-            log.error("Erro ao criar funcionario: {}", e.getMessage(), e);
+            log.error("Erro ao criar funcionário: {}", e.getMessage(), e);
             throw e;
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<FuncionarioDTO> atualizar(@PathVariable Long id, @Valid @RequestBody FuncionarioDTO funcionarioDTO) {
-        log.info("Atualizando funcionario com ID {}: {}", id, funcionarioDTO);
+        log.info("Atualizando funcionário com ID {}: {}", id, funcionarioDTO);
         try {
             FuncionarioDTO funcionarioAtualizado = funcionarioService.atualizar(id, funcionarioDTO);
-            log.debug("Funcionario ID {} atualizado com sucesso", id);
+            log.debug("Funcionário ID {} atualizado com sucesso", id);
             return ResponseEntity.ok(funcionarioAtualizado);
         } catch (Exception e) {
-            log.error("Erro ao atualizar funcionario ID {}: {}", id, e.getMessage(), e);
+            log.error("Erro ao atualizar funcionário ID {}: {}", id, e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        log.info("Excluindo funcionario com ID: {}", id);
+        log.info("Excluíndo funcionário com ID: {}", id);
         try {
             funcionarioService.excluir(id);
-            log.debug("Funcionario com ID {} excluído com sucesso", id);
+            log.debug("Funcionário com ID {} excluído com sucesso", id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            log.error("Erro ao excluir funcionario com ID {}: {}", id, e.getMessage(), e);
+            log.error("Erro ao excluir funcionário com ID {}: {}", id, e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
     }
