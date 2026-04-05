@@ -1,6 +1,5 @@
 package br.uniesp.si.techback.dto;
 
-import br.uniesp.si.techback.model.Plano;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
