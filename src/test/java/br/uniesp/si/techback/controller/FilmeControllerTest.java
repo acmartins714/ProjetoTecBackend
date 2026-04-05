@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -63,7 +64,7 @@ class FilmeControllerTest {
     @Test
     @DisplayName("Deve listar todos os filmes")
     void deveListarTodosOsFilmes() throws Exception {
-        List<FilmeDTO> filmes = Arrays.asList(filmeSalvoDTO);
+        List<FilmeDTO> filmes = Collections.singletonList(filmeSalvoDTO);
         when(filmeService.listar()).thenReturn(filmes);
 
         mockMvc.perform(get("/filmes"))

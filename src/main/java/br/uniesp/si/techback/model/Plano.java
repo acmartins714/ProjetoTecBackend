@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -26,5 +28,8 @@ public class Plano {
 
     @Column(name = "streams_simultaneos", nullable = false, columnDefinition = "SMALLINT")
     private int streams_simultaneos;
+
+    //@OneToMany(mappedBy = "plano")
+    //private List<Assinatura> assinaturas;
 
 }

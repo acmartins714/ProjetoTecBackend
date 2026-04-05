@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,6 +23,10 @@ public class Assinatura {
 
     @Column(name = "usuario_id", nullable = false)
     private Long usuarioId; // UUID **FK** → `usuarios(id)`
+
+    //@ManyToOne
+    //@JoinColumn(name = "plano_id", nullable = false)
+    //private Plano plano;
 
     @Column(name = "plano_id", nullable = false)
     private Long planoId; // UUID **FK** → `plano(id)`

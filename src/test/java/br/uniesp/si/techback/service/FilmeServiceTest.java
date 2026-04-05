@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,8 +65,8 @@ class FilmeServiceTest {
     @Test
     @DisplayName("Deve listar todos os filmes")
     void deveListarTodosOsFilmes() {
-        List<Filme> filmes = Arrays.asList(filme);
-        List<FilmeDTO> filmesDTO = Arrays.asList(filmeDTO);
+        List<Filme> filmes = Collections.singletonList(filme);
+        List<FilmeDTO> filmesDTO = Collections.singletonList(filmeDTO);
 
         when(filmeRepository.findAll()).thenReturn(filmes);
         when(filmeMapper.toDTO(filme)).thenReturn(filmeDTO);

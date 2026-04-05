@@ -17,7 +17,6 @@ public class PlanoMapper {
         plano.setCodigo(dto.getCodigo());
         plano.setLimiteDiario(dto.getLimiteDiario());
         plano.setStreams_simultaneos(dto.getStreams_simultaneos());
-
         return plano;
     }
 
