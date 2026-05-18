@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -34,7 +35,7 @@ public class UsuarioDTO {
 
     @NotBlank(message = "A criação de uma senha é obrigatório!")
     @Size(min = 8, max = 60, message = "A senha deve ter entre 8 e 60 caracteres!")
-    private String senhaHhash;
+    private String senhaHash;
 
     @NotBlank(message = "O C.P.F. ou C.N.P.J. do usuário é obrigatório!")
     @CPF(message = "O C.P.F. não é valido")
@@ -51,5 +52,7 @@ public class UsuarioDTO {
     @NotNull(message = "A data de atualização dos dados do usuário é obrigatória!")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime atualizadoEm;
+
+    private List<AssinaturaDTO> assinaturas;
 
 }

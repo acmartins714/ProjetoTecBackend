@@ -27,12 +27,27 @@ public class PlanoService {
         try {
             List<Plano> planos = planoRepository.findAll();
             List<PlanoDTO> planosDTO = planos.stream()
-                    .map(planoMapper::toDTO)
+                  .map(planoMapper::toDTO)
                     .collect(Collectors.toList());
             log.debug("Total dos planos encontrados: {}", planosDTO.size());
             return planosDTO;
         } catch (Exception e) {
             log.error("Falha ao buscar planos: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<PlanoDTO> listarPlanosAssinaturas() {
+        log.info("Buscando todos os planos cadastrados com as suas assinaturas");
+        try {
+            List<Plano> planos = planoRepository.findAllWithAssinaturas();
+            List<PlanoDTO> planosDTO = planos.stream()
+                    .map(planoMapper::toDTO)
+                    .collect(Collectors.toList());
+            log.debug("Total dos planos encontrados: {}", planosDTO.size());
+            return planosDTO;
+        } catch (Exception e) {
+            log.error("Falha ao buscar planos com as assinaturas: {}", e.getMessage(), e);
             throw e;
         }
     }

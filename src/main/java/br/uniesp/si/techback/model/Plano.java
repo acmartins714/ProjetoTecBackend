@@ -1,12 +1,14 @@
 package br.uniesp.si.techback.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +29,7 @@ public class Plano {
     @Column(name = "streams_simultaneos", nullable = false, columnDefinition = "SMALLINT")
     private int streams_simultaneos;
 
-    //@OneToMany(mappedBy = "plano")
-    //private List<Assinatura> assinaturas;
-
+    @JsonManagedReference
+    @OneToMany(mappedBy = "plano")
+    private List<Assinatura> assinaturas;
 }

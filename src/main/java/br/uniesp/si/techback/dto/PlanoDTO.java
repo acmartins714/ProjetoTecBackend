@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -24,5 +26,6 @@ public class PlanoDTO {
     @NotNull(message = "A quantidade de acessos simultaneos do plano deve ser informada!")
     private int streams_simultaneos;
 
+    private List<AssinaturaDTO> assinaturas;
 
 }

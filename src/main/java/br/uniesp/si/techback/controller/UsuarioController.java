@@ -1,5 +1,6 @@
 package br.uniesp.si.techback.controller;
 
+import br.uniesp.si.techback.dto.PlanoDTO;
 import br.uniesp.si.techback.dto.UsuarioDTO;
 import br.uniesp.si.techback.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -27,6 +30,14 @@ public class UsuarioController {
         log.info("Listando todos os usuários");
         List<UsuarioDTO> usuarios = usuarioService.listar();
         log.debug("Total de usuários encontrados: {}", usuarios.size());
+        return usuarios;
+    }
+
+    @GetMapping("/listarUsuariosAssinaturas")
+    public List<UsuarioDTO> listarTodosComAssinaturas() {
+        log.info("Listando todos os usuários de suas assinaturas");
+        List<UsuarioDTO> usuarios = usuarioService.listarUsuariosAssinaturas();
+        log.debug("Total de usuários encontradas: {}", usuarios.size());
         return usuarios;
     }
 

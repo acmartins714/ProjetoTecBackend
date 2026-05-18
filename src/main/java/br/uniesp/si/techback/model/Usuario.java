@@ -1,5 +1,6 @@
 package br.uniesp.si.techback.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data // Geração de getts and setters toString e hashcode para todos os campos
 @Builder
@@ -38,7 +40,7 @@ public class Usuario {
     private String cpfCnpj;
 
     @Column(name = "perfil", nullable = false, columnDefinition = "CHAR(20)", length = 20)
-    @Pattern(regexp = "ADMIN|USER", message = "Este campo só permite as valores ADMIN OU USER!")
+    //@Pattern(regexp = "ADMIN|USER", message = "Este campo só permite as valores ADMIN OU USER!")
     private String perfil;
 
     @Column(name = "criado_em", nullable = false, columnDefinition = "TIMESTAMP")
@@ -46,5 +48,9 @@ public class Usuario {
 
     @Column(name = "atualizado_em", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime atualizadoEm;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario")
+    private List<Assinatura> assinaturas;
 
 }

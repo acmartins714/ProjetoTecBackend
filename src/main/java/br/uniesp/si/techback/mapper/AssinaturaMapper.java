@@ -14,8 +14,8 @@ public class AssinaturaMapper {
         
         Assinatura assinatura = new Assinatura();
         assinatura.setId(dto.getId());
-        assinatura.setUsuarioId(dto.getUsuarioId());
-        assinatura.setPlanoId(dto.getPlanoId());
+        assinatura.setUsuario(dto.getUsuario());
+        assinatura.setPlano(dto.getPlano());
         assinatura.setStatus(dto.getStatus());
         assinatura.setIniciadaEm(dto.getIniciadaEm());
         assinatura.setCanceladaEm(dto.getCanceladaEm());
@@ -30,8 +30,8 @@ public class AssinaturaMapper {
         
         AssinaturaDTO dto = new AssinaturaDTO();
         dto.setId(entity.getId());
-        dto.setUsuarioId(entity.getUsuarioId());
-        dto.setPlanoId(entity.getPlanoId());
+        dto.setUsuario(entity.getUsuario());
+        dto.setPlano(entity.getPlano());
         dto.setStatus(entity.getStatus());
         dto.setIniciadaEm(entity.getIniciadaEm());
         dto.setCanceladaEm(entity.getCanceladaEm());

@@ -1,10 +1,12 @@
 package br.uniesp.si.techback.service;
 
 import br.uniesp.si.techback.dto.FilmeDTO;
+import br.uniesp.si.techback.dto.PlanoDTO;
 import br.uniesp.si.techback.dto.UsuarioDTO;
 import br.uniesp.si.techback.mapper.FilmeMapper;
 import br.uniesp.si.techback.mapper.UsuarioMapper;
 import br.uniesp.si.techback.model.Filme;
+import br.uniesp.si.techback.model.Plano;
 import br.uniesp.si.techback.model.Usuario;
 import br.uniesp.si.techback.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -36,6 +38,21 @@ public class UsuarioService {
             return usuariosDTO;
         } catch (Exception e) {
             log.error("Falha ao buscar usuários: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<UsuarioDTO> listarUsuariosAssinaturas() {
+        log.info("Buscando todos os Usuários e seus planos");
+        try {
+            List<Usuario> usuarios = usuarioRepository.findAllWithAssinaturas();
+            List<UsuarioDTO> usuarioDTOS = usuarios.stream()
+                    .map(usuarioMapper::toDTO)
+                    .collect(Collectors.toList());
+            log.debug("Total dos usuários encontrados: {}", usuarioDTOS.size());
+            return usuarioDTOS;
+        } catch (Exception e) {
+            log.error("Falha ao buscar usuários e suas assinaturas: {}", e.getMessage(), e);
             throw e;
         }
     }

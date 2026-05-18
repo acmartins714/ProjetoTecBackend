@@ -1,15 +1,14 @@
 package br.uniesp.si.techback.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,15 +20,15 @@ public class Assinatura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "usuario_id", nullable = false)
-    private Long usuarioId; // UUID **FK** → `usuarios(id)`
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    private Usuario usuario;
 
-    //@ManyToOne
-    //@JoinColumn(name = "plano_id", nullable = false)
-    //private Plano plano;
-
-    @Column(name = "plano_id", nullable = false)
-    private Long planoId; // UUID **FK** → `plano(id)`
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "plano_id", referencedColumnName = "id")
+    private Plano plano;
 
     @Column(name = "status", nullable = false, length = 20)
     @Pattern(regexp = "ATIVA|EM_ATRASO|CANCELADA", message = "Este campo aceita apenas os seguintes valores: ATIVA | EM_ATRASO | CANCELADA!")
