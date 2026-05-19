@@ -1,6 +1,7 @@
 package br.uniesp.si.techback.dto;
 
 import br.uniesp.si.techback.model.MetodoPagamento;
+import br.uniesp.si.techback.model.Usuario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ public class MetodoPagamentoDTO {
     private Long id;
 
     @NotNull(message = "A identificação do usuário deve ser informada!")
-    private Long usuarioId;
+    private long usuarioId;
 
     @NotBlank(message = "A bancdeira do cartão deve ser informada!")
     private String bandeira;

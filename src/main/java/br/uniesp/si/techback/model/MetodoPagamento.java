@@ -21,7 +21,7 @@ public class MetodoPagamento {
     private Long id;
 
     @Column(name = "usuario_id", nullable = false)
-    private Usuario usuario; // UUID **FK** → `usuarios(id)` (**ON DELETE CASCADE**)
+    private Long usuarioId; // UUID **FK** → `usuarios(id)` (**ON DELETE CASCADE**)
 
     @Column(name = "bandeira", nullable = false, length = 20)
     private String bandeira;

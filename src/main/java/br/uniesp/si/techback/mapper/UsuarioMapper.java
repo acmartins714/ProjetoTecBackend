@@ -17,7 +17,7 @@ public class UsuarioMapper {
         usuario.setNomeCompleto(dto.getNomeCompleto());
         usuario.setDataNascimento(dto.getDataNascimento());
         usuario.setEmail(dto.getEmail());
-        usuario.setSenhaHhash(dto.getSenhaHhash());
+        //usuario.setSenhaHhash(dto.getSenhaHhash());
         usuario.setCpfCnpj(dto.getCpfCnpj());
         usuario.setPerfil(dto.getPerfil());
         usuario.setCriadoEm(dto.getCriadoEm());
@@ -36,7 +36,7 @@ public class UsuarioMapper {
         dto.setNomeCompleto(entity.getNomeCompleto());
         dto.setDataNascimento(entity.getDataNascimento());
         dto.setEmail(entity.getEmail());
-        dto.setSenhaHhash(entity.getSenhaHhash());
+        //dto.setSenhaHhash(entity.getSenhaHhash());
         dto.setCpfCnpj(entity.getCpfCnpj());
         dto.setPerfil(entity.getPerfil());
         dto.setCriadoEm(entity.getCriadoEm());
