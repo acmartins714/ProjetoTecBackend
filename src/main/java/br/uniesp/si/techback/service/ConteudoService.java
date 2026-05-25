@@ -49,7 +49,7 @@ public class ConteudoService {
      */
     public Page<ConteudoDTO> listaPaginada(Pageable pageable) {
         Page<Conteudo> result = conteudoRepository.findAll(pageable);
-        return result.map(x -> new ConteudoMapper().toDTO(x));
+        return result.map(conteudoMapper::toDTO);
     }
 
     /**

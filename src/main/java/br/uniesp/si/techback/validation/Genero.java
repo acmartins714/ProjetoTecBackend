@@ -2,19 +2,17 @@ package br.uniesp.si.techback.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-
 import java.lang.annotation.*;
 
-@Constraint(validatedBy = GeneroValidationValidator.class)
 @Documented
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Constraint(validatedBy = GeneroValidator.class)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GeneroValidation {
+public @interface Genero {
 
-    String message() default "O Genero não esta na lista disponível";
+    String message() default "Gênero inválido";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
 }

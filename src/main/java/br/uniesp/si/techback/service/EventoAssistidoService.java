@@ -50,7 +50,7 @@ public class EventoAssistidoService {
      */
     public Page<EventoAssistidoDTO> listaPaginada(Pageable pageable) {
         Page<EventoAssistido> result = eventoAssistidoRepository.findAll(pageable);
-        return result.map(x -> new EventoAssistidoMapper().toDTO(x));
+        return result.map(eventoAssistidoMapper::toDTO);
     }
 
     /**

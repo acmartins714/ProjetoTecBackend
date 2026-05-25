@@ -1,12 +1,13 @@
 package br.uniesp.si.techback.service;
 
-import br.uniesp.si.techback.dto.FilmeDTO;
-import br.uniesp.si.techback.dto.PlanoDTO;
+import br.uniesp.si.techback.client.ViaCepClient;
+import br.uniesp.si.techback.client.RfbClient;
+import br.uniesp.si.techback.dto.RfbApiResponseDTO;
 import br.uniesp.si.techback.dto.UsuarioDTO;
-import br.uniesp.si.techback.mapper.FilmeMapper;
+import br.uniesp.si.techback.dto.ViaCepResponseDTO;
+import br.uniesp.si.techback.enuns.TIPOPESSOA;
+import br.uniesp.si.techback.exception.CustomBeanException;
 import br.uniesp.si.techback.mapper.UsuarioMapper;
-import br.uniesp.si.techback.model.Filme;
-import br.uniesp.si.techback.model.Plano;
 import br.uniesp.si.techback.model.Usuario;
 import br.uniesp.si.techback.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +27,8 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+    private final ViaCepClient viaCepClient;
+    private final RfbClient rfbCLient;
 
     public List<UsuarioDTO> listar() {
         log.info("Buscando todos os usuários cadastrados");
@@ -42,6 +45,7 @@ public class UsuarioService {
         }
     }
 
+    /*
     public List<UsuarioDTO> listarUsuariosAssinaturas() {
         log.info("Buscando todos os Usuários e seus planos");
         try {
@@ -56,6 +60,7 @@ public class UsuarioService {
             throw e;
         }
     }
+    */
 
     /**
      * @param pageable o json
@@ -66,10 +71,10 @@ public class UsuarioService {
      *  }
      * @return lista de filmes paginada, ou lança uma exceção {@link RuntimeException}
      * se não existir algum filme cadastrado.
-     */
+    */
     public Page<UsuarioDTO> listaPaginada(Pageable pageable) {
         Page<Usuario> result = usuarioRepository.findAll(pageable);
-        return result.map(x -> new UsuarioMapper().toDTO(x));
+        return result.map(usuarioMapper::toDTO);
     }
 
     /**
@@ -127,7 +132,40 @@ public class UsuarioService {
      */
     @Transactional
     public UsuarioDTO salvar(UsuarioDTO usuarioDTO) {
+
         log.info("Salvando novo usuário: {}", usuarioDTO.getId());
+
+        if (usuarioDTO.getTipoPessoa() == TIPOPESSOA.JURIDICA) {
+
+            String cnpjLimpo = usuarioDTO.getCpfCnpj().replaceAll("\\D", "");
+            RfbApiResponseDTO dadosCnpj = rfbCLient.buscarPorCnpj(cnpjLimpo);
+
+            if (dadosCnpj.getStatus().equals("ERROR")) {
+                throw new CustomBeanException("C.N.P.J. inválido para consulta na RFB");
+            }
+
+            usuarioDTO.setFantasia(dadosCnpj.getFantasia());
+            usuarioDTO.setTelefone(dadosCnpj.getTelefone().replaceAll("\\D", ""));
+            usuarioDTO.setEmail(dadosCnpj.getEmail());
+            usuarioDTO.setComplemento(dadosCnpj.getComplemento());
+        }
+
+        if (usuarioDTO.getCep() != null && !usuarioDTO.getCep().isBlank()) {
+            String cepLimpo = usuarioDTO.getCep().replaceAll("\\D", "");
+            ViaCepResponseDTO endereco = viaCepClient.buscarPorCep(cepLimpo);
+
+            // Exemplo simples para a turma: quando a API retorna erro, lancamos a excecao customizada.
+            if (Boolean.TRUE.equals(endereco.getErro())) {
+                throw new CustomBeanException("CEP invalido para consulta no ViaCEP");
+            }
+
+            usuarioDTO.setCep(endereco.getCep().replaceAll("\\D", ""));
+            usuarioDTO.setLogradouro(endereco.getLogradouro());
+            usuarioDTO.setBairro(endereco.getBairro());
+            usuarioDTO.setMunicipio(endereco.getLocalidade());
+            usuarioDTO.setUf(endereco.getUf());
+        }
+
         try {
             Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
             Usuario usuarioSalvo = usuarioRepository.save(usuario);

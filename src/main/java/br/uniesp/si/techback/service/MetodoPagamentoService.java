@@ -52,7 +52,7 @@ public class MetodoPagamentoService {
      */
     public Page<MetodoPagamentoDTO> listarPaginado(Pageable pageable) {
         Page<MetodoPagamento> result = metodoPagamentoRepository.findAll(pageable);
-        return result.map(x -> new MetodoPagamentoMapper().toDTO(x));
+        return result.map(metodoPagamentoMapper::toDTO);
     }
 
     /**

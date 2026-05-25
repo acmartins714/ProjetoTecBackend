@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface PlanoRepository extends JpaRepository<Plano, Long> {
 
-    @Query("SELECT p FROM Plano p JOIN FETCH p.assinaturas")
-    List<Plano> findAllWithAssinaturas();
+    //@Query("SELECT p FROM Plano p JOIN FETCH p.assinaturas")
+    //List<Plano> findAllWithAssinaturas();
 
 }

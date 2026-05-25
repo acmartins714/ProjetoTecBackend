@@ -50,7 +50,7 @@ public class FavoritoService {
      */
     public Page<FavoritoDTO> listaPaginada(Pageable pageable) {
         Page<Favorito> result = favoritoRepository.findAll(pageable);
-        return result.map(x -> new FavoritoMapper().toDTO(x));
+        return result.map(favoritoMapper::toDTO);
     }
 
     /**

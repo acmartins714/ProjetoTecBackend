@@ -49,7 +49,7 @@ public class FuncionarioController {
     }
 
     @PostMapping
-    public ResponseEntity<FuncionarioDTO> criar(@Valid @RequestBody FuncionarioDTO funcionarioDTO) {
+    public ResponseEntity<FuncionarioDTO> salvar(@Valid @RequestBody FuncionarioDTO funcionarioDTO) {
         log.info("Recebida requisição para criar novo funcionário: {}", funcionarioDTO.getNome());
         try {
             FuncionarioDTO funcionarioSalvo = funcionarioService.salvar(funcionarioDTO);

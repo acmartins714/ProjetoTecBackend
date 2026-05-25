@@ -37,6 +37,7 @@ public class PlanoService {
         }
     }
 
+    /*
     public List<PlanoDTO> listarPlanosAssinaturas() {
         log.info("Buscando todos os planos cadastrados com as suas assinaturas");
         try {
@@ -51,6 +52,7 @@ public class PlanoService {
             throw e;
         }
     }
+     */
 
     /**
      * @param pageable o json
@@ -64,7 +66,7 @@ public class PlanoService {
      */
     public Page<PlanoDTO> listaPaginada(Pageable pageable) {
         Page<Plano> result = planoRepository.findAll(pageable);
-        return result.map(x -> new PlanoMapper().toDTO(x));
+        return result.map(planoMapper::toDTO);
     }
 
     /**

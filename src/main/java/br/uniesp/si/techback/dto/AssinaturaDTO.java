@@ -2,6 +2,7 @@ package br.uniesp.si.techback.dto;
 
 import br.uniesp.si.techback.model.Plano;
 import br.uniesp.si.techback.model.Usuario;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,13 +24,10 @@ public class AssinaturaDTO {
     private Long id;
 
     @NotNull(message = "A identificação do usuário responsável pela assinatura é obrigatória")
-    //@Range(min=1, message = "Só são perminitidos números positivos para identificação do usuário!")
-    private Usuario usuario;
+    private long usuario;
 
-    @NotNull(message = "A identificação do plano é obrigatória")
-    //@Range(min=1, message = "Só são perminitidos números positivos para identificação do plano!")
-    //private Long planoId;
-    private Plano plano;
+    //@NotNull(message = "A identificação do plano é obrigatória")
+    //private Plano plano;
 
     @NotBlank(message = "O Status da assinatura deve ser informado!")
     @Pattern(regexp = "ATIVA|EM_ATRASO|CANCELADA", message = "Este campo aceita apenas os seguintes valores: ATIVA | EM_ATRASO | CANCELADA!")

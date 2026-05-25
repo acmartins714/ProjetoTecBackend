@@ -1,34 +1,32 @@
 package br.uniesp.si.techback.mapper;
 
+import br.uniesp.si.techback.dto.ConteudoDTO;
 import br.uniesp.si.techback.dto.EventoAssistidoDTO;
+import br.uniesp.si.techback.model.Conteudo;
 import br.uniesp.si.techback.model.EventoAssistido;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EventoAssistidoMapper {
 
+    private final ModelMapper modelMapper;
+
+    public EventoAssistidoMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     public EventoAssistido toEntity(EventoAssistidoDTO dto) {
         if (dto == null) {
             return null;
         }
-        
-        EventoAssistido eventoAssistido = new EventoAssistido();
-        eventoAssistido.setEventoAssistidoId(dto.getEventoAssistidoId());
-        eventoAssistido.setAssistidoEm(dto.getAssistidoEm());
-
-        return eventoAssistido;
+        return modelMapper.map(dto, EventoAssistido.class);
     }
 
     public EventoAssistidoDTO toDTO(EventoAssistido entity) {
         if (entity == null) {
             return null;
         }
-        
-        EventoAssistidoDTO dto = new EventoAssistidoDTO();
-        dto.setEventoAssistidoId(entity.getEventoAssistidoId());
-        dto.setAssistidoEm(entity.getAssistidoEm());
-
-        return dto;
+        return modelMapper.map(entity, EventoAssistidoDTO.class);
     }
-
 }

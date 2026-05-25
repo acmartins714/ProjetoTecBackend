@@ -1,36 +1,33 @@
 package br.uniesp.si.techback.mapper;
 
 import br.uniesp.si.techback.dto.FuncionarioDTO;
+import br.uniesp.si.techback.dto.UsuarioDTO;
 import br.uniesp.si.techback.model.Funcionario;
+import br.uniesp.si.techback.model.Usuario;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FuncionarioMapper {
 
+    private final ModelMapper modelMapper;
+
+    public FuncionarioMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     public Funcionario toEntity(FuncionarioDTO dto) {
         if (dto == null) {
             return null;
         }
-
-        Funcionario funcionario = new Funcionario();
-        funcionario.setId(dto.getId());
-        funcionario.setNome(dto.getNome());
-        funcionario.setCargo(dto.getCargo());
-
-        return funcionario;
+        return modelMapper.map(dto, Funcionario.class);
     }
 
     public FuncionarioDTO toDTO(Funcionario entity) {
         if (entity == null) {
             return null;
         }
-
-        FuncionarioDTO dto = new FuncionarioDTO();
-        dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        dto.setCargo(entity.getCargo());
-
-        return dto;
+        return modelMapper.map(entity, FuncionarioDTO.class);
     }
 
 }

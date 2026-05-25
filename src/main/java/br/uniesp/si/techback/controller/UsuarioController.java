@@ -33,6 +33,7 @@ public class UsuarioController {
         return usuarios;
     }
 
+    /*
     @GetMapping("/listarUsuariosAssinaturas")
     public List<UsuarioDTO> listarTodosComAssinaturas() {
         log.info("Listando todos os usuários de suas assinaturas");
@@ -40,6 +41,7 @@ public class UsuarioController {
         log.debug("Total de usuários encontradas: {}", usuarios.size());
         return usuarios;
     }
+     */
 
     @GetMapping("/listapaginada")
     public ResponseEntity<Page<UsuarioDTO>> findAll(Pageable pageable) {
@@ -60,7 +62,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> criar(@Valid @RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<UsuarioDTO> salvar(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         log.info("Recebida requisição para criar novo usuário: {}", usuarioDTO.getNomeCompleto());
         try {
             UsuarioDTO usuarioSalvo = usuarioService.salvar(usuarioDTO);

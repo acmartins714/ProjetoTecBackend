@@ -30,6 +30,7 @@ public class PlanoController {
         return planos;
     }
 
+    /*
     @GetMapping("/listarPlanosAssinaturas")
     public List<PlanoDTO> listarTodosComAssinaturas() {
         log.info("Listando todos os planos com suas assinaturas");
@@ -37,6 +38,7 @@ public class PlanoController {
         log.debug("Total de planos encontradas: {}", planos.size());
         return planos;
     }
+     */
 
     @GetMapping("/listapaginada")
     public ResponseEntity<Page<PlanoDTO>> findAll(Pageable pageable) {

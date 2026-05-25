@@ -1,17 +1,22 @@
 package br.uniesp.si.techback.dto;
 
+import br.uniesp.si.techback.enuns.PERFIL;
+import br.uniesp.si.techback.enuns.TIPOPESSOA;
+import br.uniesp.si.techback.validation.CnpjCpf;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
@@ -37,13 +42,33 @@ public class UsuarioDTO {
     @Size(min = 8, max = 60, message = "A senha deve ter entre 8 e 60 caracteres!")
     private String senhaHash;
 
+    @NotNull(message = "O Tipo de pessoa do usuário é obrigatório!")
+    private TIPOPESSOA tipoPessoa;
+
     @NotBlank(message = "O C.P.F. ou C.N.P.J. do usuário é obrigatório!")
-    @CPF(message = "O C.P.F. não é valido")
+    @CnpjCpf(tipoPessoa = TIPOPESSOA.JURIDICA)
     private String cpfCnpj;
 
-    @NotBlank(message = "O perfil do usuário é obrigatório!")
-    @Pattern(regexp = "ADMIN|USER", message = "Este campo só permite as valores ADMIN OU USER!")
-    private String perfil;
+    private String fantasia;
+
+    private String logradouro;
+
+    private String numero;
+
+    private String complemento;
+
+    private String bairro;
+
+    private String municipio;
+
+    private String uf;
+
+    private String cep;
+
+    private String telefone;
+
+    @NotNull(message = "O perfil do usuário é obrigatório!")
+    private PERFIL perfil;
 
     @NotNull(message = "A data de criação do usuário é obrigatória!")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -53,6 +78,7 @@ public class UsuarioDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime atualizadoEm;
 
-    private List<AssinaturaDTO> assinaturas;
+    //@JsonManagedReference
+    //private List<AssinaturaDTO> assinaturas;
 
 }

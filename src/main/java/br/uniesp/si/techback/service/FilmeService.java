@@ -50,10 +50,10 @@ public class FilmeService {
      * @return lista de filmes paginada, ou lança uma exceção {@link RuntimeException}
      * se não existir algum filme cadastrado.
      */
-    public Page<FilmeDTO> listaPaginada(Pageable pageable) {
+     public Page<FilmeDTO> listaPaginada(Pageable pageable) {
         Page<Filme> result = filmeRepository.findAll(pageable);
-        return result.map(x -> new FilmeMapper().toDTO(x));
-    }
+        return result.map(filmeMapper::toDTO);
+     }
 
     /**
      * @param id o ID do filme.
