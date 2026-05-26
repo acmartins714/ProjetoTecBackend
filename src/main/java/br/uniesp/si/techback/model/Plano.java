@@ -2,6 +2,8 @@ package br.uniesp.si.techback.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,7 +27,6 @@ public class Plano {
     @Column(name = "streams_simultaneos", nullable = false, columnDefinition = "SMALLINT")
     private int streams_simultaneos;
 
-    //@JsonManagedReference
-    //@OneToMany(mappedBy = "plano")
-    //private List<Assinatura> assinaturas;
+    @OneToMany(mappedBy = "plano")
+    private List<Assinatura> assinaturas = new ArrayList<>();
 }

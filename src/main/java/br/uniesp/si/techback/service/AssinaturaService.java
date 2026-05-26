@@ -60,7 +60,7 @@ public class AssinaturaService {
         log.info("Buscando assinatura pelo ID: {}", id);
         Assinatura assinatura = assinaturaRepository.findById(id)
                 .map(assinaturaEncontrada -> {
-                    log.debug("Assinatura encontrada: ID={}, ID Usuário={}", assinaturaEncontrada.getId(), assinaturaEncontrada.getUsuario());
+                    log.debug("Assinatura encontrada: ID={}, ID Usuário={}", assinaturaEncontrada.getId(), assinaturaEncontrada.getCliente());
                     return assinaturaEncontrada;
                 })
                 .orElseThrow(() -> {
@@ -89,7 +89,7 @@ public class AssinaturaService {
                     Assinatura assinaturaParaAtualizar = assinaturaMapper.toEntity(assinaturaDTO);
                     Assinatura assinaturaSalvo = assinaturaRepository.save(assinaturaParaAtualizar);
                     log.info("Assinatura ID: {} atualizada com sucesso. Novo ID de Usuário: {}",
-                            id, assinaturaSalvo.getUsuario());
+                            id, assinaturaSalvo.getCliente());
                     return assinaturaSalvo;
                 })
                 .orElseThrow(() -> {
@@ -112,7 +112,7 @@ public class AssinaturaService {
         try {
             Assinatura assinatura = assinaturaMapper.toEntity(assinaturaDTO);
             Assinatura assinaturaSalva = assinaturaRepository.save(assinatura);
-            log.info("Assinatura salva com sucesso. ID: {}, Identificador de Usuário : {}", assinaturaSalva.getId(), assinaturaSalva.getUsuario());
+            log.info("Assinatura salva com sucesso. ID: {}, Identificador de Usuário : {}", assinaturaSalva.getId(), assinaturaSalva.getCliente());
             return assinaturaMapper.toDTO(assinaturaSalva);
         } catch (Exception e) {
             log.error("Falha ao salvar assinatura '{}': {}", assinaturaDTO.getUsuario(), e.getMessage(), e);

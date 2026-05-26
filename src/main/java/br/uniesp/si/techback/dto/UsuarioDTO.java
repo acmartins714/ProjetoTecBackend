@@ -4,6 +4,7 @@ import br.uniesp.si.techback.enuns.PERFIL;
 import br.uniesp.si.techback.enuns.TIPOPESSOA;
 import br.uniesp.si.techback.validation.CnpjCpf;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -24,7 +26,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UsuarioDTO {
 
-    private Long id;
+    private long id;
 
     @NotBlank(message = "O nome do usuário é obrigatório!")
     @Size(min = 3, max = 150, message = "O nome do usuário deve ter no mimimo 3 e no máximo 150 caracteres!")
@@ -78,7 +80,6 @@ public class UsuarioDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime atualizadoEm;
 
-    //@JsonManagedReference
-    //private List<AssinaturaDTO> assinaturas;
+    private List<AssinaturaDTO> assinaturas;
 
 }

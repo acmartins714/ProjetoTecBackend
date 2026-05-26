@@ -3,6 +3,8 @@ package br.uniesp.si.techback.model;
 import br.uniesp.si.techback.enuns.PERFIL;
 import br.uniesp.si.techback.enuns.TIPOPESSOA;
 import br.uniesp.si.techback.validation.CnpjCpf;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data // Geração de getts and setters toString e hashcode para todos os campos
 @Builder
@@ -81,5 +85,8 @@ public class Usuario {
     //@JsonManagedReference
     //@OneToMany(mappedBy = "usuario")
     //private List<Assinatura> assinaturas;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Assinatura> assinaturas = new ArrayList<>();
 
 }

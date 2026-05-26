@@ -1,9 +1,7 @@
 package br.uniesp.si.techback.dto;
 
-import br.uniesp.si.techback.model.Plano;
-import br.uniesp.si.techback.model.Usuario;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -11,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
@@ -24,10 +21,11 @@ public class AssinaturaDTO {
     private Long id;
 
     @NotNull(message = "A identificação do usuário responsável pela assinatura é obrigatória")
-    private long usuario;
+    private UsuarioDTO usuario;
 
-    //@NotNull(message = "A identificação do plano é obrigatória")
-    //private Plano plano;
+    @NotNull(message = "A identificação do plano é obrigatória")
+    @JsonIgnoreProperties("assinaturas")
+    private PlanoDTO plano;
 
     @NotBlank(message = "O Status da assinatura deve ser informado!")
     @Pattern(regexp = "ATIVA|EM_ATRASO|CANCELADA", message = "Este campo aceita apenas os seguintes valores: ATIVA | EM_ATRASO | CANCELADA!")

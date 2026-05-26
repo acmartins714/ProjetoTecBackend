@@ -28,7 +28,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
     private final ViaCepClient viaCepClient;
-    private final RfbClient rfbCLient;
+    private final RfbClient rfbClient;
 
     public List<UsuarioDTO> listar() {
         log.info("Buscando todos os usuários cadastrados");
@@ -138,7 +138,7 @@ public class UsuarioService {
         if (usuarioDTO.getTipoPessoa() == TIPOPESSOA.JURIDICA) {
 
             String cnpjLimpo = usuarioDTO.getCpfCnpj().replaceAll("\\D", "");
-            RfbApiResponseDTO dadosCnpj = rfbCLient.buscarPorCnpj(cnpjLimpo);
+            RfbApiResponseDTO dadosCnpj = rfbClient.buscarPorCnpj(cnpjLimpo);
 
             if (dadosCnpj.getStatus().equals("ERROR")) {
                 throw new CustomBeanException("C.N.P.J. inválido para consulta na RFB");
