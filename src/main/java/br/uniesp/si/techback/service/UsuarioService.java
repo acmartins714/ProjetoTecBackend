@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class UsuarioService {
     private final UsuarioMapper usuarioMapper;
     private final ViaCepClient viaCepClient;
     private final RfbClient rfbClient;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UsuarioDTO> listar() {
         log.info("Buscando todos os usuários cadastrados");
@@ -111,6 +113,10 @@ public class UsuarioService {
                     log.debug("Dados atuais do usuário: {}", usuarioExistente);
                     log.debug("Novos dados: {} ", usuarioDTO);
                     usuarioDTO.setId(id);
+                    
+                    // Criptografa a senha antes de atualizar
+                    usuarioDTO.setSenhaHash(passwordEncoder.encode(usuarioDTO.getSenhaHash()));
+                    
                     Usuario usuarioParaAtualizar = usuarioMapper.toEntity(usuarioDTO);
                     Usuario usuarioSalvo = usuarioRepository.save(usuarioParaAtualizar);
                     log.info("Usuário ID: {} atualizado com sucesso. ", id);
@@ -166,6 +172,9 @@ public class UsuarioService {
             usuarioDTO.setUf(endereco.getUf());
         }
 
+        // Criptografa a senha antes de salvar
+        usuarioDTO.setSenhaHash(passwordEncoder.encode(usuarioDTO.getSenhaHash()));
+
         try {
             Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
             Usuario usuarioSalvo = usuarioRepository.save(usuario);
@@ -200,4 +209,3 @@ public class UsuarioService {
     }
 
 }
-

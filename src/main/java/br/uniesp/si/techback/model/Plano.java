@@ -18,7 +18,7 @@ public class Plano {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "codigo", nullable = false, unique = true, length = 20)
+    @Column(name = "codigo", nullable = false, columnDefinition = "VARCHAR(20)", unique = true, length = 20)
     private String codigo;
 
     @Column(name = "limite_diario", nullable = false, columnDefinition = "SMALLINT")

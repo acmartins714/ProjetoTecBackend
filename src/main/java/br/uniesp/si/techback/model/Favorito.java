@@ -1,9 +1,7 @@
 package br.uniesp.si.techback.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +19,12 @@ public class Favorito {
 
     @EmbeddedId
     private FavoritoId favoritoId;
+
+    @ManyToOne
+    @MapsId("usuarioId")
+    @JoinColumn(name = "usuario_id")
+    @JsonIgnore // Impede que o usuário seja serializado dentro do evento
+    private Usuario usuario;
 
     @Column(name = "criado_em", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime criadoEm;

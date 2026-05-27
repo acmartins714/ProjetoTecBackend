@@ -24,10 +24,10 @@ public class Conteudo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "titulo", nullable = false, length = 200)
+    @Column(name = "titulo", nullable = false, columnDefinition = "VARCHAR(200)",length = 200)
     private String titulo;
 
-    @Column(name = "tipo", nullable = false, columnDefinition = "CHAR(10)", length = 10)
+    @Column(name = "tipo", nullable = false, columnDefinition = "VARCHAR(10)", length = 10)
     private String tipo;
 
     @Column(name = "ano", nullable = false, columnDefinition = "SMALLINT")
@@ -45,10 +45,10 @@ public class Conteudo {
     @Column(name = "sinopse", columnDefinition = "TEXT")
     private String sinopse;
 
-    @Column(name = "trailer_url", length = 500)
+    @Column(name = "trailer_url",columnDefinition = "VARCHAR(500)", length = 500)
     private String trailerUrl;
 
-    @Column(name = "genero", length = 50)
+    @Column(name = "genero",columnDefinition = "VARCHAR(50)", length = 50)
     private String genero;
 
     @Column(name = "criado_em", columnDefinition = "TIMESTAMP")

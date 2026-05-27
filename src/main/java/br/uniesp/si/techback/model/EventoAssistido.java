@@ -1,9 +1,6 @@
 package br.uniesp.si.techback.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +18,16 @@ public class EventoAssistido {
 
     @EmbeddedId
     private EventoAssistidoId eventoAssistidoId;
+
+    @ManyToOne
+    @MapsId("usuarioId")
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @ManyToOne
+    @MapsId("conteudoId")
+    @JoinColumn(name = "conteudo_id")
+    private Conteudo conteudo;
 
     @Column(name = "assistido_em", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime assistidoEm;

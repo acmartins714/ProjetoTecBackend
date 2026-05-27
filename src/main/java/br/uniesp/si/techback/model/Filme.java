@@ -21,7 +21,7 @@ public class Filme {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, columnDefinition = "VARCHAR(100)", length = 100)
     private String titulo;
 
     @Column(columnDefinition = "TEXT")
@@ -30,13 +30,13 @@ public class Filme {
     @Column(name = "data_lancamento")
     private LocalDate dataLancamento;
 
-    @Column(length = 50)
+    @Column(length = 50, columnDefinition = "VARCHAR(50)")
     @Genero
     private String genero;
 
     @Column(name = "duracao_minutos")
     private Integer duracaoMinutos;
 
-    @Column(name = "classificacao_indicativa", length = 10)
+    @Column(name = "classificacao_indicativa", columnDefinition = "VARCHAR(10)", length = 10)
     private String classificacaoIndicativa;
 }

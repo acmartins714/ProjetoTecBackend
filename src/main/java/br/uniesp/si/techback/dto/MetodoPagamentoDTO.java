@@ -22,7 +22,7 @@ public class MetodoPagamentoDTO {
     private Long id;
 
     @NotNull(message = "A identificação do usuário deve ser informada!")
-    private long usuarioId;
+    private Usuario usuario;
 
     @NotBlank(message = "A bancdeira do cartão deve ser informada!")
     private String bandeira;
@@ -46,17 +46,5 @@ public class MetodoPagamentoDTO {
     @NotNull(message = "A data da criação precisa estar preencida!")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime criadoEm;
-
-    public MetodoPagamentoDTO(MetodoPagamento entity) {
-        id = entity.getId();
-        usuarioId = entity.getUsuarioId();
-        bandeira = entity.getBandeira();
-        ultimos4 = entity.getUltimos4();
-        mesExp = entity.getMesExp();
-        anoExp = entity.getAnoExp();
-        nomePortador = entity.getNomePortador();
-        tokenGateway = entity.getTokenGateway();
-        criadoEm = entity.getCriadoEm();
-    }
 
 }

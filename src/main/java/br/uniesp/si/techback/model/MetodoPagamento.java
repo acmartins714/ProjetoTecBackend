@@ -20,10 +20,11 @@ public class MetodoPagamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "usuario_id", nullable = false)
-    private Long usuarioId; // UUID **FK** → `usuarios(id)` (**ON DELETE CASCADE**)
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Usuario cliente;
 
-    @Column(name = "bandeira", nullable = false, length = 20)
+    @Column(name = "bandeira", nullable = false, columnDefinition = "VARCHAR(20)", length = 20)
     private String bandeira;
 
     @Column(name = "ultimos4", nullable = false, columnDefinition = "CHAR(4)", length = 4)
@@ -35,10 +36,10 @@ public class MetodoPagamento {
     @Column(name = "ano_exp", nullable = false, columnDefinition = "SMALLINT")
     private int anoExp;
 
-    @Column(name = "nome_portador", nullable = false, length = 150)
+    @Column(name = "nome_portador", nullable = false, columnDefinition = "VARCHAR(150)", length = 150)
     private String nomePortador;
 
-    @Column(name = "token_gateway", nullable = false, length = 120)
+    @Column(name = "token_gateway", nullable = false, columnDefinition = "VARCHAR(120)", length = 120)
     private String tokenGateway;
 
     @Column(name = "criado_em", nullable = false, columnDefinition = "TIMESTAMP")

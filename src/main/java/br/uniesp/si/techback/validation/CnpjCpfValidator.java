@@ -5,31 +5,56 @@ import br.uniesp.si.techback.utils.CNPJValidator;
 import br.uniesp.si.techback.utils.CpfValidador;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import java.lang.reflect.Field;
 
 public class CnpjCpfValidator implements ConstraintValidator<CnpjCpf, Object> {
 
-    private TIPOPESSOA tipoPessoa;
-
     @Override
-    public void initialize(CnpjCpf cnpjCpf) {
-        ConstraintValidator.super.initialize(cnpjCpf);
-        this.tipoPessoa = cnpjCpf.tipoPessoa();
+    public void initialize(CnpjCpf constraintAnnotation) {
     }
 
     @Override
-    public boolean isValid(Object cnpjCpf, ConstraintValidatorContext context) {
-
-        if (tipoPessoa == TIPOPESSOA.JURIDICA) {
-           String cnpj = (String) cnpjCpf;
-           return CNPJValidator.isValid(cnpj);
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+        if (value == null) {
+            return true;
         }
 
-        if (tipoPessoa == TIPOPESSOA.FISICA) {
-            String cpf = (String) cnpjCpf;
-            return CpfValidador.validarCPF(cpf);
+        try {
+            Field fieldTipo = value.getClass().getDeclaredField("tipoPessoa");
+            Field fieldCpfCnpj = value.getClass().getDeclaredField("cpfCnpj");
+            
+            fieldTipo.setAccessible(true);
+            fieldCpfCnpj.setAccessible(true);
+
+            TIPOPESSOA tipoPessoa = (TIPOPESSOA) fieldTipo.get(value);
+            String cpfCnpj = (String) fieldCpfCnpj.get(value);
+
+            if (tipoPessoa == null || cpfCnpj == null) {
+                return true;
+            }
+
+            boolean isValid = false;
+            String message = "";
+
+            if (tipoPessoa == TIPOPESSOA.JURIDICA) {
+                isValid = CNPJValidator.isValid(cpfCnpj);
+                message = "CNPJ inválido";
+            } else if (tipoPessoa == TIPOPESSOA.FISICA) {
+                isValid = CpfValidador.validarCPF(cpfCnpj);
+                message = "CPF inválido";
+            }
+
+            if (!isValid) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(message)
+                       .addPropertyNode("cpfCnpj") // Vincula o erro ao campo específico
+                       .addConstraintViolation();
+            }
+
+            return isValid;
+
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return true;
         }
-
-        return false;
-
     }
 }
