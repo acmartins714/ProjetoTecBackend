@@ -78,27 +78,6 @@ public class FuncionarioService {
         return funcionarioMapper.toDTO(funcionario);
     }
 
-    public Funcionario incluir(Funcionario funcionario) {
-
-        if (funcionario.getCep() != null && !funcionario.getCep().isBlank()) {
-            String cepLimpo = funcionario.getCep().replaceAll("\\D", "");
-            ViaCepResponseDTO endereco = viaCepClient.buscarPorCep(cepLimpo);
-
-            // Exemplo simples para a turma: quando a API retorna erro, lancamos a excecao customizada.
-            if (Boolean.TRUE.equals(endereco.getErro())) {
-                throw new CustomBeanException("CEP invalido para consulta no ViaCEP");
-            }
-
-            funcionario.setCep(endereco.getCep());
-            funcionario.setLogradouro(endereco.getLogradouro());
-            funcionario.setBairro(endereco.getBairro());
-            funcionario.setLocalidade(endereco.getLocalidade());
-            funcionario.setUf(endereco.getUf());
-        }
-
-        return funcionarioRepository.save(funcionario);
-    }
-
     /**
      * Atualiza um funcionario existente.
      *
@@ -114,6 +93,23 @@ public class FuncionarioService {
                     log.debug("Dados atuais do funcionario: {}", funcionarioExistente);
                     log.debug("Novos dados: {}", funcionarioDTO);
                     funcionarioDTO.setId(id);
+
+                    if (funcionarioDTO.getCep() != null && !funcionarioDTO.getCep().isBlank()) {
+                        String cepLimpo = funcionarioDTO.getCep().replaceAll("\\D", "");
+                        ViaCepResponseDTO endereco = viaCepClient.buscarPorCep(cepLimpo);
+
+                        // Exemplo simples para a turma: quando a API retorna erro, lancamos a excecao customizada.
+                        if (Boolean.TRUE.equals(endereco.getErro())) {
+                            throw new CustomBeanException("CEP inválido para consulta no ViaCEP");
+                        }
+
+                        funcionarioDTO.setCep(endereco.getCep().replaceAll("\\D", ""));
+                        funcionarioDTO.setLogradouro(endereco.getLogradouro());
+                        funcionarioDTO.setBairro(endereco.getBairro());
+                        funcionarioDTO.setLocalidade(endereco.getLocalidade());
+                        funcionarioDTO.setUf(endereco.getUf());
+                    }
+
                     Funcionario funcionarioParaAtualizar = funcionarioMapper.toEntity(funcionarioDTO);
                     Funcionario funcionarioSalvo = funcionarioRepository.save(funcionarioParaAtualizar);
                     log.info("Funcionario ID: {} atualizado com sucesso. Novo título: {}",

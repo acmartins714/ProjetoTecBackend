@@ -18,5 +18,13 @@ export const conteudoService = {
   deletar: (id) => api.delete(`/conteudos/${id}`),
 };
 
+export const funcionarioService = {
+  listar: () => api.get('/funcionarios'),
+  buscarPorId: (id) => api.get(`/funcionarios/${id}`),
+  salvar: (dados) => api.post('/funcionarios', dados),
+  atualizar: (id, dados) => api.put(`/funcionarios/${id}`, dados),
+  deletar: (id) => api.delete(`/funcionarios/${id}`),
+};
+
 // Você pode estender para os outros serviços (filmes, planos, assinaturas) seguindo a mesma lógica.
 export default api;

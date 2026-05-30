@@ -1,7 +1,6 @@
 package br.uniesp.si.techback.controller;
 
 import br.uniesp.si.techback.dto.FilmeDTO;
-import br.uniesp.si.techback.dto.FuncionarioDTO;
 import br.uniesp.si.techback.service.FilmeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,15 @@ import java.util.List;
 public class FilmeController {
 
     private final FilmeService filmeService;
+    public record FilmeFiltroDTO(String genero, String titulo) {};
 
+    @GetMapping("/ordenado")
+    public List<FilmeDTO> listarOrdenado() {
+        log.info("Listando todos os filmes ordenados por título(ascendente)");
+        List<FilmeDTO> filmes = filmeService.listarOrdenado();
+        log.debug("Total de filmes encontrados: {}", filmes.size());
+        return filmes;
+    }
     @GetMapping
     public List<FilmeDTO> listar() {
         log.info("Listando todos os filmes");
@@ -45,6 +52,30 @@ public class FilmeController {
             return ResponseEntity.ok(filme);
         } catch (Exception e) {
             log.error("Erro ao buscar filme com ID {}: {}", id, e.getMessage(), e);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/genero/{genero}")
+    public ResponseEntity<FilmeDTO> buscarPorGenero(@PathVariable String genero) {
+        try {
+            FilmeDTO filme = filmeService.buscarPorGenero(genero);
+            log.debug("Filme com gênero {} encontrado: ", genero);
+            return ResponseEntity.ok(filme);
+        } catch (Exception e) {
+            log.error("Erro ao buscar filme com gênero {}: {}", genero, e.getMessage(), e);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("generoetitulo")
+    public ResponseEntity<FilmeDTO> buscarPorGeneroETitulo(FilmeFiltroDTO filtro) {
+        try {
+            FilmeDTO filme = filmeService.buscaPorGeneroETitulo(filtro.genero, filtro.titulo);
+            log.debug("Filme com gênero {} e título {} foi encontrado: ", filtro.genero, filtro.titulo);
+            return ResponseEntity.ok(filme);
+        } catch (Exception e) {
+            log.error("Erro ao buscar filme com gênero {} e título : {}", filtro.genero, filtro.titulo, e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
     }

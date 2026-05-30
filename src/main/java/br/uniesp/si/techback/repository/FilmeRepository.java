@@ -12,14 +12,18 @@ import java.util.Optional;
 @Repository
 public interface FilmeRepository extends JpaRepository<Filme, Long> {
 
-    @Query("select f from Filme f " +
-    "order by f.titulo asc")
+    @Query("select f from Filme f order by f.titulo asc")
     public List<Filme> listarFilmesOrdenados();
 
-    public List<Filme> findAllByOrderByTituloAsc();
-
-    Optional<Filme> findByGenero(String genero);
-
     @Query("select f from Filme f where f.genero = :genero order by f.titulo")
-    Filme buscarPorGenero(@Param("genero") String genero);
+    Optional<Filme> buscarPorGenero(@Param("genero") String genero);
+
+    @Query("select f from Filme f where f.genero = :genero and f.titulo = :titulo")
+    Optional<Filme> buscarPorGenero(@Param("genero") String genero, @Param("titulo") String titulo);
+
+    //Optional<Filme> findByGenero(String genero);
+
+    //public List<Filme> findAllByOrderByTituloAsc();
+
+
 }

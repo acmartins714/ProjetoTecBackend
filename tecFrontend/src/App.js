@@ -19,6 +19,9 @@ const AppContent = () => {
           <li className={activeMenu === 'usuarios' ? 'active' : ''} onClick={() => setActiveMenu('usuarios')}>
             👥 Usuários
           </li>
+          <li className={activeMenu === 'funcionarios' ? 'active' : ''} onClick={() => setActiveMenu('funcionarios')}>
+            👷 Funcionários
+          </li>
         </ul>
       </aside>
 

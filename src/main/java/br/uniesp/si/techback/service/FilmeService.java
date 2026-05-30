@@ -1,11 +1,8 @@
 package br.uniesp.si.techback.service;
 
 import br.uniesp.si.techback.dto.FilmeDTO;
-import br.uniesp.si.techback.dto.FuncionarioDTO;
 import br.uniesp.si.techback.mapper.FilmeMapper;
-import br.uniesp.si.techback.mapper.PlanoMapper;
 import br.uniesp.si.techback.model.Filme;
-import br.uniesp.si.techback.model.Funcionario;
 import br.uniesp.si.techback.repository.FilmeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +22,12 @@ public class FilmeService {
     private final FilmeRepository filmeRepository;
     private final FilmeMapper filmeMapper;
 
+    public List<FilmeDTO> listarOrdenado() {
+        return filmeRepository.listarFilmesOrdenados().stream()
+                .map(filmeMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<FilmeDTO> listar() {
         log.info("Buscando todos os filmes cadastrados");
         try {
@@ -41,7 +44,7 @@ public class FilmeService {
     }
 
     /**
-     * @param pageable o json
+     * param pageable o json
      *  {
      *   "page": 0,
      *   "size": 5,
@@ -63,7 +66,7 @@ public class FilmeService {
         log.info("Buscando filme pelo ID: {}", id);
         Filme filme = filmeRepository.findById(id)
                 .map(filmeEncontrado -> {
-                    log.debug("Filme encontrado: ID={}, Título={}", filmeEncontrado.getId(), filmeEncontrado.getTitulo());
+                    log.debug("Filme encontrado: ID {}, Título {}", filmeEncontrado.getId(), filmeEncontrado.getTitulo());
                     return filmeEncontrado;
                 })
                 .orElseThrow(() -> {
@@ -74,11 +77,41 @@ public class FilmeService {
         return filmeMapper.toDTO(filme);
     }
 
+    public FilmeDTO buscarPorGenero(String genero) {
+        log.info("Buscando filme pelo GENERO: {}", genero);
+        Filme filme = filmeRepository.buscarPorGenero(genero)
+                .map(filmeEncontrado -> {
+                    log.debug("Filme encontrado: ID={}, Título={}", filmeEncontrado.getId(), filmeEncontrado.getTitulo());
+                    return filmeEncontrado;
+                })
+                .orElseThrow(() -> {
+                    String mensagem = String.format("Filme(s) com o genero {} não encontrado(s) : %s", genero);
+                    log.warn(mensagem);
+                    return new RuntimeException(mensagem);
+                });
+        return filmeMapper.toDTO(filme);
+    }
+
+    public FilmeDTO buscaPorGeneroETitulo(String genero, String titulo) {
+
+        log.info("Buscando filme pelo GENERO: {} e TÍTULO: {}", genero, titulo);
+        Filme filme = filmeRepository.buscarPorGenero(genero, titulo)
+                .map(filmeEncontrado -> {
+                    log.debug("Filme ID {}, Título {} e Gênero {} ", filmeEncontrado.getId(), filmeEncontrado.getTitulo(), filmeEncontrado.getGenero());
+                    return filmeEncontrado;
+                })
+                .orElseThrow(() -> {
+                    String mensagem = String.format("Filme(s) com o genero %s e título %s não encontrado(s)", genero, titulo);
+                    log.warn(mensagem);
+                    return new RuntimeException(mensagem);
+                });
+        return filmeMapper.toDTO(filme);
+    }
+
     /**
      * Atualiza um filme existente.
-     *
-     * @param id    o ID do filme a ser atualizado.
-     * @param filme o filme com as informações atualizadas.
+     * param id    o ID do filme a ser atualizado.
+     * param filme o filme com as informações atualizadas.
      * @return o filme atualizado.
      */
     @Transactional
@@ -105,9 +138,8 @@ public class FilmeService {
 
     /**
      * Salva um novo filme.
-     *
-     * @param filme o filme a ser salvo.
-     * @return o filme salvo.
+     * param filme o filme a ser salvo.
+     * return o filme salvo.
      */
     @Transactional
     public FilmeDTO salvar(FilmeDTO filmeDTO) {
