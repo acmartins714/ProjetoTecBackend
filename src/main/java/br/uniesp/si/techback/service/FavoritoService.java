@@ -1,6 +1,7 @@
 package br.uniesp.si.techback.service;
 
 import br.uniesp.si.techback.dto.FavoritoDTO;
+import br.uniesp.si.techback.dto.FavoritoResponseDTO;
 import br.uniesp.si.techback.mapper.FavoritoMapper;
 import br.uniesp.si.techback.model.Favorito;
 import br.uniesp.si.techback.model.FavoritoId;
@@ -51,6 +52,21 @@ public class FavoritoService {
     public Page<FavoritoDTO> listaPaginada(Pageable pageable) {
         Page<Favorito> result = favoritoRepository.findAll(pageable);
         return result.map(favoritoMapper::toDTO);
+    }
+
+    public List<FavoritoResponseDTO> listaFavoritoPorUsuario(Long usuarioId) {
+        log.info("Buscando todos os favoritos cadastrados");
+        try {
+            List<FavoritoResponseDTO> favoritos = favoritoRepository.listarFavoritoPorUsuario(usuarioId);
+//            List<FavoritoDTO> favoritosDTO = favoritos.stream()
+//                    .map(favoritoMapper::toDTO)
+//                    .collect(Collectors.toList());
+//            log.debug("Total de favoritos encontrados: {}", favoritosDTO.size());
+            return favoritos;
+        } catch (Exception e) {
+            log.error("Falha ao buscar favoritos: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**

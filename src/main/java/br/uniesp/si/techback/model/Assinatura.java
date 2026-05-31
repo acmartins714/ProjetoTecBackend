@@ -20,6 +20,7 @@ public class Assinatura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnoreProperties("assinaturas")
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Usuario cliente;

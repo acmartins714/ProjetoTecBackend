@@ -1,6 +1,7 @@
 package br.uniesp.si.techback.controller;
 
 import br.uniesp.si.techback.dto.FavoritoDTO;
+import br.uniesp.si.techback.dto.FavoritoResponseDTO;
 import br.uniesp.si.techback.model.FavoritoId;
 import br.uniesp.si.techback.service.FavoritoService;
 import jakarta.validation.Valid;
@@ -37,8 +38,16 @@ public class FavoritoController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/favoritosPorUsuario/{usuarioId}")
+    public List<FavoritoResponseDTO> listarFavoritoPorUsuario(@PathVariable Long usuarioId) {
+        log.info("Listando todos os favoritos");
+        List<FavoritoResponseDTO> favoritos = favoritoService.listaFavoritoPorUsuario(usuarioId);
+        log.debug("Total de favoritos encontrados: {}", favoritos.size());
+        return favoritos;
+    }
+
     @GetMapping("/{usuarioId}/{conteudoId}")
-    public ResponseEntity<FavoritoDTO> buscarPorId(@PathVariable Long usuarioId, Long conteudoId) {
+    public ResponseEntity<FavoritoDTO> buscarPorId(@PathVariable Long usuarioId, @PathVariable Long conteudoId) {
 
         FavoritoId id = new FavoritoId(usuarioId, conteudoId);
 
@@ -90,7 +99,7 @@ public class FavoritoController {
     }
 
     @DeleteMapping("/{usuarioId}/{conteudoId}")
-    public ResponseEntity<Void> deletar(@PathVariable Long usuarioId, Long conteudoId) {
+    public ResponseEntity<Void> deletar(@PathVariable Long usuarioId, @PathVariable Long conteudoId) {
 
         FavoritoId id = new FavoritoId(usuarioId, conteudoId);
 

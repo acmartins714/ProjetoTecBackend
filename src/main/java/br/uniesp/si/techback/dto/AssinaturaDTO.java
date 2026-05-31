@@ -21,7 +21,8 @@ public class AssinaturaDTO {
     private Long id;
 
     @NotNull(message = "A identificação do usuário responsável pela assinatura é obrigatória")
-    private UsuarioDTO usuario;
+    @JsonIgnoreProperties("assinaturas")
+    private UsuarioDTO cliente;
 
     @NotNull(message = "A identificação do plano é obrigatória")
     @JsonIgnoreProperties("assinaturas")

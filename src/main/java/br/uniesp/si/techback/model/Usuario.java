@@ -86,7 +86,7 @@ public class Usuario {
     @OneToMany(mappedBy = "cliente")
     private List<MetodoPagamento> metodosPagamento = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "cliente")
     private List<EventoAssistido> eventosAssistidos = new ArrayList<>();
 
     //@JsonManagedReference

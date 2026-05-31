@@ -33,15 +33,13 @@ public class UsuarioController {
         return usuarios;
     }
 
-    /*
-    @GetMapping("/listarUsuariosAssinaturas")
-    public List<UsuarioDTO> listarTodosComAssinaturas() {
-        log.info("Listando todos os usuários de suas assinaturas");
-        List<UsuarioDTO> usuarios = usuarioService.listarUsuariosAssinaturas();
-        log.debug("Total de usuários encontradas: {}", usuarios.size());
+    @GetMapping("/buscaPorNome")
+    public List<UsuarioDTO> buscarPorNome(String nome) {
+        log.info("Listando todos os usuários que o nome se enquadre no escopo de pesquisa: {}", nome);
+        List<UsuarioDTO> usuarios = usuarioService.buscaPorNome(nome);
+        log.debug("Total de usuários encontrados: {}", usuarios.size());
         return usuarios;
     }
-     */
 
     @GetMapping("/listapaginada")
     public ResponseEntity<Page<UsuarioDTO>> findAll(Pageable pageable) {

@@ -1,9 +1,11 @@
 package br.uniesp.si.techback.service;
 
 import br.uniesp.si.techback.dto.EventoAssistidoDTO;
+import br.uniesp.si.techback.dto.FilmeDTO;
 import br.uniesp.si.techback.mapper.EventoAssistidoMapper;
 import br.uniesp.si.techback.model.EventoAssistido;
 import br.uniesp.si.techback.model.EventoAssistidoId;
+import br.uniesp.si.techback.model.Filme;
 import br.uniesp.si.techback.repository.EventoAssistidoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -53,33 +55,32 @@ public class EventoAssistidoService {
         return result.map(eventoAssistidoMapper::toDTO);
     }
 
-    /**
-     * @param id o ID do eventoAssistido.
-     * @return o eventoAssistido encontrado, ou lança uma exceção {@link RuntimeException} se o eventoAssistido não existir.
-     */
-    public EventoAssistidoDTO buscarPorId(EventoAssistidoId id) {
 
-        log.info("Buscando eventos assistidos pelo ID {}:", id);
+    public EventoAssistidoDTO buscaPorClienteConteudo(Long clienteId, Long conteudoId) {
 
-        EventoAssistido eventoAssistido = eventoAssistidoRepository.findById(id)
-                .map(eventoAssistidoEncontrado -> {
-                    log.debug("Evento assistido encontrado: ID={}", id);
-                    return eventoAssistidoEncontrado;
-                })
-                .orElseThrow(() -> {
-                    String mensagem = String.format("Evento assistido não encontrado com o ID: %d", id);
-                    log.warn(mensagem);
-                    return new RuntimeException(mensagem);
-                });
-        return eventoAssistidoMapper.toDTO(eventoAssistido);
+        log.info("Buscando Eventos Assistidos pelo Cliente ID: {} e Conteúdo ID: {}", clienteId, conteudoId);
+
+        try {
+            EventoAssistido eventoAssistido = eventoAssistidoRepository.buscarPorClienteConteudo(clienteId, conteudoId);
+            log.debug("Total de Evento Assistido encontrados Cliente ID: {} e Conteúdo ID: {}", clienteId, conteudoId);
+            return eventoAssistidoMapper.toDTO(eventoAssistido);
+        } catch (Exception e) {
+            String mensagem = String.format("Eventos Assistidos com o cliente ID: %d e Conteúdo ID: %d não encontrado(s)", clienteId, conteudoId);
+            log.warn(mensagem);
+            throw e;
+        }
+
     }
+
+
+
+
 
     /**
      * Atualiza um eventoAssistido existente.
-     *
-     * @param id    o ID do eventoAssistido a ser atualizado.
-     * @param evento assistido o eventoAssistido com as informações atualizadas.
-     * @return o eventoAssistido atualizado.
+     * param id    o ID do eventoAssistido a ser atualizado.
+     * param evento assistido o eventoAssistido com as informações atualizadas.
+     * return o eventoAssistido atualizado.
      */
     @Transactional
     public EventoAssistidoDTO atualizar(EventoAssistidoId id, EventoAssistidoDTO eventoAssistidoDTO) {
@@ -110,10 +111,9 @@ public class EventoAssistidoService {
     }
 
     /**
-     * Salva um novo eventoAssistido.
-     *
-     * @param evento assistido o eventoAssistido a ser salvo.
-     * @return o eventoAssistido salvo.
+      Salva um novo eventoAssistido.
+      param evento assistido o eventoAssistido a ser salvo.
+      return o eventoAssistido salvo.
      */
     @Transactional
     public EventoAssistidoDTO salvar(EventoAssistidoDTO eventoAssistidoDTO) {
@@ -131,7 +131,6 @@ public class EventoAssistidoService {
 
     /**
      * Exclui um eventoAssistido existente.
-     *
      * @param id o ID do eventoAssistido a ser excluído.
      */
     @Transactional

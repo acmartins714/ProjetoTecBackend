@@ -37,6 +37,21 @@ public class AssinaturaService {
         }
     }
 
+    public List<AssinaturaDTO> buscaPorStatus(String status) {
+        log.info("Buscando todas as assinaturas com o status: {}", status);
+        try {
+            List<Assinatura> assinaturas = assinaturaRepository.buscarPorStatus(status);
+            List<AssinaturaDTO> assinaturasDTO = assinaturas.stream()
+                    .map(assinaturaMapper::toDTO)
+                    .collect(Collectors.toList());
+            log.debug("Total de assinaturas com status: {} encontradas: {}", status, assinaturasDTO.size());
+            return assinaturasDTO;
+        } catch (Exception e) {
+            log.error("Falha ao buscar assinaturas: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
     /**
      * @param pageable o json
      *  {
@@ -73,10 +88,9 @@ public class AssinaturaService {
 
     /**
      * Atualiza um assinatura existente.
-     *
-     * @param id    o ID do assinatura a ser atualizado.
-     * @param assinatura o assinatura com as informações atualizadas.
-     * @return o assinatura atualizado.
+     * param id    o ID do assinatura a ser atualizado.
+     * param assinatura o assinatura com as informações atualizadas.
+     * return o assinatura atualizado.
      */
     @Transactional
     public AssinaturaDTO atualizar(Long id, AssinaturaDTO assinaturaDTO) {
@@ -102,20 +116,19 @@ public class AssinaturaService {
 
     /**
      * Salva um novo assinatura.
-     *
-     * @param assinatura o assinatura a ser salvo.
-     * @return o assinatura salvo.
+     * param assinatura o assinatura a ser salvo.
+     * return o assinatura salvo.
      */
     @Transactional
     public AssinaturaDTO salvar(AssinaturaDTO assinaturaDTO) {
-        log.info("Salvando novo assinatura: {}", assinaturaDTO.getUsuario());
+        log.info("Salvando novo assinatura: {}", assinaturaDTO.getCliente());
         try {
             Assinatura assinatura = assinaturaMapper.toEntity(assinaturaDTO);
             Assinatura assinaturaSalva = assinaturaRepository.save(assinatura);
             log.info("Assinatura salva com sucesso. ID: {}, Identificador de Usuário : {}", assinaturaSalva.getId(), assinaturaSalva.getCliente());
             return assinaturaMapper.toDTO(assinaturaSalva);
         } catch (Exception e) {
-            log.error("Falha ao salvar assinatura '{}': {}", assinaturaDTO.getUsuario(), e.getMessage(), e);
+            log.error("Falha ao salvar assinatura '{}': {}", assinaturaDTO.getCliente(), e.getMessage(), e);
             throw e;
         }
     }

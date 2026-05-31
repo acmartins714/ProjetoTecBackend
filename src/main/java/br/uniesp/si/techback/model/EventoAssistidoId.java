@@ -14,6 +14,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Embeddable
 public class EventoAssistidoId implements Serializable {
-    private Long usuarioId;
+    private Long clienteId;
     private Long conteudoId;
 }

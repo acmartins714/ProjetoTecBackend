@@ -47,23 +47,6 @@ public class UsuarioService {
         }
     }
 
-    /*
-    public List<UsuarioDTO> listarUsuariosAssinaturas() {
-        log.info("Buscando todos os Usuários e seus planos");
-        try {
-            List<Usuario> usuarios = usuarioRepository.findAllWithAssinaturas();
-            List<UsuarioDTO> usuarioDTOS = usuarios.stream()
-                    .map(usuarioMapper::toDTO)
-                    .collect(Collectors.toList());
-            log.debug("Total dos usuários encontrados: {}", usuarioDTOS.size());
-            return usuarioDTOS;
-        } catch (Exception e) {
-            log.error("Falha ao buscar usuários e suas assinaturas: {}", e.getMessage(), e);
-            throw e;
-        }
-    }
-    */
-
     /**
      * @param pageable o json
      *  {
@@ -96,6 +79,21 @@ public class UsuarioService {
                     return new RuntimeException(mensagem);
                 });
         return usuarioMapper.toDTO(usuario);
+    }
+
+    public List<UsuarioDTO> buscaPorNome(String nome) {
+        log.info("Buscando todos os usuários que o nome se enquadre no escopo de pesquisa: {}", nome);
+        try {
+            List<Usuario> usuarios = usuarioRepository.buscarPorNome(nome);
+            List<UsuarioDTO> usuariosDTO = usuarios.stream()
+                    .map(usuarioMapper::toDTO)
+                    .collect(Collectors.toList());
+            log.debug("Total dos usuários encontrados: {}", usuariosDTO.size());
+            return usuariosDTO;
+        } catch (Exception e) {
+            log.error("Falha ao buscar usuários pela chave de pesquisa: {} - {}", nome, e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**

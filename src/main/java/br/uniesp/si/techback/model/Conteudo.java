@@ -1,6 +1,8 @@
 package br.uniesp.si.techback.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +21,6 @@ import java.time.LocalDateTime;
 @Table(name = "conteudo")
 public class Conteudo {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,11 +36,13 @@ public class Conteudo {
     private int ano;
 
     @Column(name = "duracao_minutos", nullable = false, columnDefinition = "SMALLINT")
-    @Range(min = 1, max = 999)
+    @Range(min = 1, max = 240)
     private int duracaoMinutos;
 
     @Column(name = "relevancia", nullable = false, columnDefinition = "NUMBER(4,2)")
     @Digits(integer = 2, fraction = 2)
+    @DecimalMin(value = "0.00", message = "Relevância deve ser um valor entre 0 e 10")
+    @DecimalMax(value = "10.00", message = "Relevância deve ser um valor entre 0 e 10")
     private BigDecimal relevancia;
 
     @Column(name = "sinopse", columnDefinition = "TEXT")

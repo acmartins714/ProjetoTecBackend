@@ -71,12 +71,72 @@ public class ConteudoService {
         return conteudoMapper.toDTO(conteudo);
     }
 
+    public List<ConteudoDTO> buscarPorTitulo(String titulo) {
+        log.info("Buscando conteúdo por parte do título: {}", titulo);
+
+        try {
+            List<Conteudo> conteudos = conteudoRepository.buscarPorTitulo(titulo);
+            return conteudos.stream()
+                    .map(conteudoMapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Falha ao buscar conteúdo: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<ConteudoDTO> listaRanking(Long limite) {
+        log.info("Buscando conteúdos por relavância. Ranking TOP: {}", limite);
+
+        try {
+            List<Conteudo> conteudos = conteudoRepository.listaRanking(limite);
+            return conteudos.stream()
+                    .map(conteudoMapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Falha ao buscar conteúdos para formação dos TOP: {} - {}", limite, e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<ConteudoDTO> listaConteudoAposAnoLancamento(int ano) {
+        log.info("Buscando conteúdos lançados após o ano de {} ", ano);
+
+        try {
+            List<Conteudo> conteudos = conteudoRepository.listaConteudoAposAnoLancamento(ano);
+            return conteudos.stream()
+                    .map(conteudoMapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Falha ao buscar conteúdos com ano de lançamento após: {} - {}", ano, e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<ConteudoDTO> listaConteudoChaveTituloSinopse(String keyword) {
+
+        log.info("Buscando conteúdo pela palavra chave: {} em título e sinopse.", keyword);
+
+        try {
+            List<Conteudo> conteudos = conteudoRepository.listaConteudoChaveTituloSinopse(keyword);
+            log.debug("Total de conteúdos encontrados: {}", conteudos.size());
+            return conteudoRepository.listaConteudoChaveTituloSinopse(keyword).stream()
+                    .map(conteudoMapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            String mensagem = String.format("Conteúdos com a palavra chave: %s no título ou na sinopsee, não encontrado(s)", keyword);
+            log.warn(mensagem);
+            throw e;
+        }
+
+    }
+
+
     /**
      * Atualiza um conteudo existente.
-     *
-     * @param id    o ID do conteudo a ser atualizado.
-     * @param conteudo o conteudo com as informações atualizadas.
-     * @return o conteudo atualizado.
+     * param id    o ID do conteudo a ser atualizado.
+     * param conteudo o conteudo com as informações atualizadas.
+     * return o conteudo atualizado.
      */
     @Transactional
     public ConteudoDTO atualizar(Long id, ConteudoDTO conteudoDTO) {
@@ -102,9 +162,8 @@ public class ConteudoService {
 
     /**
      * Salva um novo conteudo.
-     *
-     * @param conteudo o conteudo a ser salvo.
-     * @return o conteudo salvo.
+     * param conteudo o conteudo a ser salvo.
+     * return o conteudo salvo.
      */
     @Transactional
     public ConteudoDTO salvar(ConteudoDTO conteudoDTO) {

@@ -48,6 +48,14 @@ public class AssinaturaController {
         }
     }
 
+    @GetMapping("/buscaStatus")
+    public List<AssinaturaDTO> buscaStatus(String status) {
+        log.info("Listando todas as assinaturas com status:{}", status);
+        List<AssinaturaDTO> assinaturas = assinaturaService.buscaPorStatus(status);
+        log.debug("Total de assinaturas com status: {} encontradas: {}", status, assinaturas.size());
+        return assinaturas;
+    }
+
     @PostMapping
     public ResponseEntity<AssinaturaDTO> criar(@Valid @RequestBody AssinaturaDTO assinaturaDTO) {
         log.info("Recebida requisição para criar nova assinatura: {}", assinaturaDTO.getId());

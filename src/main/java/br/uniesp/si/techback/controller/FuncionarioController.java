@@ -48,6 +48,19 @@ public class FuncionarioController {
         }
     }
 
+    @GetMapping("nome/{nome}")
+    public ResponseEntity<List<FuncionarioDTO>> buscarPorNome(@PathVariable String nome) {
+        List<FuncionarioDTO> funcionarios = null;
+        try {
+            funcionarios = funcionarioService.buscarPorNome(nome);
+            log.debug("Funcionário(s) encontrado(s): {}", funcionarios.size());
+            return ResponseEntity.ok(funcionarios);
+        } catch (Exception e) {
+            log.error("Erro ao buscar funcionário com parte do nome igual a {}", nome, e.getMessage(), e);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<FuncionarioDTO> salvar(@Valid @RequestBody FuncionarioDTO funcionarioDTO) {
         log.info("Recebida requisição para criar novo funcionário: {}", funcionarioDTO.getNome());

@@ -48,6 +48,54 @@ public class ConteudoController {
         }
     }
 
+    @GetMapping("titulo/{titulo}")
+    public ResponseEntity<List<ConteudoDTO>> buscarPorTitulo(@PathVariable String titulo) {
+        try {
+            List<ConteudoDTO> conteudos = conteudoService.buscarPorTitulo(titulo);
+            log.debug("Conteúdo(s) encontrado(s): {}", conteudos.size());
+            return ResponseEntity.ok(conteudos);
+        } catch (Exception e) {
+            log.error("Erro ao buscar conteúdo com título ou parte do título igual a {}: {}", titulo, e.getMessage(), e);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("ranking/{limite}")
+    public ResponseEntity<List<ConteudoDTO>> listaRanking(@PathVariable Long limite) {
+        try {
+            List<ConteudoDTO> conteudos = conteudoService.listaRanking(limite);
+            log.debug("Conteúdo(s) para montagem do ranking dos TOP: {}", limite);
+            return ResponseEntity.ok(conteudos);
+        } catch (Exception e) {
+            log.error("Erro ao buscar conteúdos para formação do ranking dos TOP: {} - {}", limite, e.getMessage(), e);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("anoLancamento/{ano}")
+    public ResponseEntity<List<ConteudoDTO>> listaConteudoAposAnoLancamento(@PathVariable int ano) {
+        try {
+            List<ConteudoDTO> conteudos = conteudoService.listaConteudoAposAnoLancamento(ano);
+            log.debug("Conteúdo(s) lançados após {} ({})", ano, conteudos.size());
+            return ResponseEntity.ok(conteudos);
+        } catch (Exception e) {
+            log.error("Erro ao buscar conteúdos com ano de lançamento após {} - {}", ano, e.getMessage(), e);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("buscaPalavraChave")
+    public ResponseEntity<List<ConteudoDTO>> listaConteudoChaveTituloSinopse(@RequestParam String keyword) {
+         try {
+            List<ConteudoDTO> conteudos = conteudoService.listaConteudoChaveTituloSinopse(keyword);
+            log.debug("Foram encontrados {} conteúdos com a palavra chave: {}.", conteudos.size(), keyword);
+            return ResponseEntity.ok(conteudos); // Retorna 200 com a lista
+        } catch (Exception e) {
+            log.error("Erro interno ao buscar conteúdos pela palavra chave: {} - {}", keyword, e.getMessage(), e);
+            return ResponseEntity.internalServerError().build(); // Em caso de erro real, o ideal é 500
+         }
+    }
+
     @PostMapping
     public ResponseEntity<ConteudoDTO> criar(@Valid @RequestBody ConteudoDTO conteudoDTO) {
         log.info("Recebida requisição para criar novo conteúdo: {}", conteudoDTO.getId());

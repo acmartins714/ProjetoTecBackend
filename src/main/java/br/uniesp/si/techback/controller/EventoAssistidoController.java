@@ -1,6 +1,8 @@
 package br.uniesp.si.techback.controller;
 
 import br.uniesp.si.techback.dto.EventoAssistidoDTO;
+import br.uniesp.si.techback.dto.FilmeDTO;
+import br.uniesp.si.techback.model.EventoAssistido;
 import br.uniesp.si.techback.model.EventoAssistidoId;
 import br.uniesp.si.techback.service.EventoAssistidoService;
 import jakarta.validation.Valid;
@@ -22,6 +24,7 @@ import java.util.List;
 public class EventoAssistidoController {
 
     private final EventoAssistidoService eventoAssistidoService;
+    public record EventoAssistidoFiltroDTO(Long clienteId, Long conteudoId) {};
 
     @GetMapping
     public List<EventoAssistidoDTO> listar() {
@@ -37,20 +40,18 @@ public class EventoAssistidoController {
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/{usuarioId}/{conteudoId}")
-    public ResponseEntity<EventoAssistidoDTO> buscarPorId(@PathVariable Long usuarioId, Long conteudoId) {
-
-        EventoAssistidoId id = new EventoAssistidoId(usuarioId, conteudoId);
-
+    @GetMapping("/buscaPorId")
+    public ResponseEntity<EventoAssistidoDTO> buscarPorId(EventoAssistidoFiltroDTO filtro) {
         try {
-            EventoAssistidoDTO eventoAssistido = eventoAssistidoService.buscarPorId(id);
-            log.debug("Conteúdo encontrado: {}", eventoAssistido);
+            EventoAssistidoDTO eventoAssistido = eventoAssistidoService.buscaPorClienteConteudo(filtro.clienteId, filtro.conteudoId);
+            log.debug("Evento Assistido para cliente ID: {} e Conteúdo ID: {} encontrado.", filtro.clienteId, filtro.conteudoId);
             return ResponseEntity.ok(eventoAssistido);
         } catch (Exception e) {
-            log.error("Erro ao buscar conteúdo com ID {}: {}", id, e.getMessage(), e);
+            log.error("Erro ao buscar Evento Assistido para cliente ID={} e Conteúdo ID= {} - {}", filtro.clienteId, filtro.conteudoId, e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @PostMapping
     public ResponseEntity<EventoAssistidoDTO> criar(@Valid @RequestBody EventoAssistidoDTO eventoAssistidoDTO) {
@@ -58,12 +59,14 @@ public class EventoAssistidoController {
         try {
             EventoAssistidoDTO eventoAssistidoSalvo = eventoAssistidoService.salvar(eventoAssistidoDTO);
             log.info("Evento Assistido criado com sucesso. ID: {}!", eventoAssistidoSalvo.getEventoAssistidoId());
-            
+
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(eventoAssistidoSalvo.getEventoAssistidoId())
+                    .path("/buscaPorId?clienteId={cId}&conteudoId={contId}")
+                    .buildAndExpand(eventoAssistidoSalvo.getEventoAssistidoId().getClienteId(),
+                                     eventoAssistidoSalvo.getEventoAssistidoId().getConteudoId())
                     .toUri();
+
             log.debug("URI de localização do novo evento assistido: {}", location);
             
             return ResponseEntity.created(location).body(eventoAssistidoSalvo);
@@ -90,7 +93,7 @@ public class EventoAssistidoController {
     }
 
     @DeleteMapping("/{usuarioId}/{conteudoId}")
-    public ResponseEntity<Void> deletar(@PathVariable Long usuarioId, Long conteudoId) {
+    public ResponseEntity<Void> deletar(@PathVariable Long usuarioId, @PathVariable Long conteudoId) {
 
         EventoAssistidoId id = new EventoAssistidoId(usuarioId, conteudoId);
 

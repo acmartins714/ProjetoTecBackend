@@ -20,9 +20,9 @@ public class EventoAssistido {
     private EventoAssistidoId eventoAssistidoId;
 
     @ManyToOne
-    @MapsId("usuarioId")
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    @MapsId("clienteId")
+    @JoinColumn(name = "cliente_id")
+    private Usuario cliente;
 
     @ManyToOne
     @MapsId("conteudoId")

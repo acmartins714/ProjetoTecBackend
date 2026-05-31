@@ -1,14 +1,11 @@
 package br.uniesp.si.techback.service;
 
-import br.uniesp.si.techback.client.BrasiApiCnpj;
 import br.uniesp.si.techback.client.ViaCepClient;
 import br.uniesp.si.techback.dto.FuncionarioDTO;
-import br.uniesp.si.techback.dto.UsuarioDTO;
 import br.uniesp.si.techback.dto.ViaCepResponseDTO;
 import br.uniesp.si.techback.exception.CustomBeanException;
 import br.uniesp.si.techback.mapper.FuncionarioMapper;
 import br.uniesp.si.techback.model.Funcionario;
-import br.uniesp.si.techback.model.Usuario;
 import br.uniesp.si.techback.repository.FuncionarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -76,6 +73,20 @@ public class FuncionarioService {
                     return new RuntimeException(mensagem);
                 });
         return funcionarioMapper.toDTO(funcionario);
+    }
+
+    public List<FuncionarioDTO> buscarPorNome(String nome) {
+        log.info("Buscando funcionário por parte do nome: {}", nome);
+
+        try {
+            List<Funcionario> funcionarios = funcionarioRepository.buscarPorNome(nome);
+            return funcionarios.stream()
+                    .map(funcionarioMapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+          log.error("Falha ao buscar funcionários: {}", e.getMessage(), e);
+          throw e;
+        }
     }
 
     /**

@@ -57,9 +57,9 @@ public class FilmeController {
     }
 
     @GetMapping("/genero/{genero}")
-    public ResponseEntity<FilmeDTO> buscarPorGenero(@PathVariable String genero) {
+    public ResponseEntity<List<FilmeDTO>> buscarPorGenero(@PathVariable String genero) {
         try {
-            FilmeDTO filme = filmeService.buscarPorGenero(genero);
+            List<FilmeDTO> filme = filmeService.buscarPorGenero(genero);
             log.debug("Filme com gênero {} encontrado: ", genero);
             return ResponseEntity.ok(filme);
         } catch (Exception e) {
@@ -68,14 +68,14 @@ public class FilmeController {
         }
     }
 
-    @GetMapping("generoetitulo")
-    public ResponseEntity<FilmeDTO> buscarPorGeneroETitulo(FilmeFiltroDTO filtro) {
+    @GetMapping("/generoetitulo")
+    public ResponseEntity<List<FilmeDTO>> buscarPorGeneroETitulo(FilmeFiltroDTO filtro) {
         try {
-            FilmeDTO filme = filmeService.buscaPorGeneroETitulo(filtro.genero, filtro.titulo);
-            log.debug("Filme com gênero {} e título {} foi encontrado: ", filtro.genero, filtro.titulo);
-            return ResponseEntity.ok(filme);
+            List<FilmeDTO> filmes = filmeService.buscaPorGeneroETitulo(filtro.genero, filtro.titulo);
+            log.debug("Foram encontrados {} filmes com gênero {} e título {}.", filmes.size(), filtro.genero, filtro.titulo);
+            return ResponseEntity.ok(filmes);
         } catch (Exception e) {
-            log.error("Erro ao buscar filme com gênero {} e título : {}", filtro.genero, filtro.titulo, e.getMessage(), e);
+            log.error("Erro ao buscar filmes com gênero {} e título : {}", filtro.genero, filtro.titulo, e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
     }

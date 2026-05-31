@@ -1,7 +1,9 @@
 package br.uniesp.si.techback.service;
 
+import br.uniesp.si.techback.dto.ConteudoDTO;
 import br.uniesp.si.techback.dto.FilmeDTO;
 import br.uniesp.si.techback.mapper.FilmeMapper;
+import br.uniesp.si.techback.model.Conteudo;
 import br.uniesp.si.techback.model.Filme;
 import br.uniesp.si.techback.repository.FilmeRepository;
 import jakarta.transaction.Transactional;
@@ -77,35 +79,39 @@ public class FilmeService {
         return filmeMapper.toDTO(filme);
     }
 
-    public FilmeDTO buscarPorGenero(String genero) {
-        log.info("Buscando filme pelo GENERO: {}", genero);
-        Filme filme = filmeRepository.buscarPorGenero(genero)
-                .map(filmeEncontrado -> {
-                    log.debug("Filme encontrado: ID={}, Título={}", filmeEncontrado.getId(), filmeEncontrado.getTitulo());
-                    return filmeEncontrado;
-                })
-                .orElseThrow(() -> {
-                    String mensagem = String.format("Filme(s) com o genero {} não encontrado(s) : %s", genero);
-                    log.warn(mensagem);
-                    return new RuntimeException(mensagem);
-                });
-        return filmeMapper.toDTO(filme);
+    public List<FilmeDTO> buscarPorGenero(String genero) {
+
+        log.info("Buscando filmes pelo GENERO: {}", genero);
+
+        try {
+            List<Filme> filmes = filmeRepository.buscarPorGenero(genero);
+            log.debug("Total de filmes encontrados: {}", filmes.size());
+            return filmeRepository.buscarPorGenero(genero).stream()
+                   .map(filmeMapper::toDTO)
+                   .collect(Collectors.toList());
+        } catch (Exception e) {
+            String mensagem = String.format("Filme(s) com o genero {} não encontrado(s) : %s", genero);
+            log.warn(mensagem);
+            throw e;
+        }
     }
 
-    public FilmeDTO buscaPorGeneroETitulo(String genero, String titulo) {
+    public List<FilmeDTO> buscaPorGeneroETitulo(String genero, String titulo) {
 
         log.info("Buscando filme pelo GENERO: {} e TÍTULO: {}", genero, titulo);
-        Filme filme = filmeRepository.buscarPorGenero(genero, titulo)
-                .map(filmeEncontrado -> {
-                    log.debug("Filme ID {}, Título {} e Gênero {} ", filmeEncontrado.getId(), filmeEncontrado.getTitulo(), filmeEncontrado.getGenero());
-                    return filmeEncontrado;
-                })
-                .orElseThrow(() -> {
-                    String mensagem = String.format("Filme(s) com o genero %s e título %s não encontrado(s)", genero, titulo);
-                    log.warn(mensagem);
-                    return new RuntimeException(mensagem);
-                });
-        return filmeMapper.toDTO(filme);
+
+        try {
+            List<Filme> filmes = filmeRepository.buscarPorGeneroETitulo(genero, titulo);
+            log.debug("Total de filmes encontrados: {}", filmes.size());
+            return filmeRepository.buscarPorGeneroETitulo(genero, titulo).stream()
+                    .map(filmeMapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            String mensagem = String.format("Filme(s) com o genero %s e título %s não encontrado(s)", genero, titulo);
+            log.warn(mensagem);
+            throw e;
+        }
+
     }
 
     /**

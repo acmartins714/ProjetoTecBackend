@@ -26,6 +26,12 @@ public class Favorito {
     @JsonIgnore // Impede que o usuário seja serializado dentro do evento
     private Usuario usuario;
 
+    @ManyToOne
+    @MapsId("conteudoId")
+    @JoinColumn(name = "conteudo_id")
+    @JsonIgnore
+    private Conteudo conteudo;
+
     @Column(name = "criado_em", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime criadoEm;
 

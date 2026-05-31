@@ -34,7 +34,7 @@ public class FilmeDTO {
     @NotBlank(message = "O gênero do filme é obigatório!")
     private String genero;
 
-    @NotNull(message = "O tempo de duração do Filme / Documentário é obigatório!")
+    @NotNull(message = "O tempo de duração do Filme / Documentário é obrigatório!")
     private Integer duracaoMinutos;
 
     @NotBlank(message = "A classificação indicativa do Filme / Documentário é obigatória!")
