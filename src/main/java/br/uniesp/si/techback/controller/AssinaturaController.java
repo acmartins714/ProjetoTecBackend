@@ -51,9 +51,14 @@ public class AssinaturaController {
     @GetMapping("/buscaStatus")
     public List<AssinaturaDTO> buscaStatus(String status) {
         log.info("Listando todas as assinaturas com status:{}", status);
-        List<AssinaturaDTO> assinaturas = assinaturaService.buscaPorStatus(status);
-        log.debug("Total de assinaturas com status: {} encontradas: {}", status, assinaturas.size());
-        return assinaturas;
+        try {
+            List<AssinaturaDTO> assinaturas = assinaturaService.buscaPorStatus(status);
+            log.debug("Total de assinaturas com status: {} encontradas: {}", status, assinaturas.size());
+            return assinaturas;
+        } catch (Exception e) {
+            log.error("Erro ao buscar assinaturas com status {}: {}", status, e.getMessage(), e);
+            throw e;
+        }
     }
 
     @PostMapping

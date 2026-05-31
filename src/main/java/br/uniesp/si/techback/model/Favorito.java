@@ -21,10 +21,10 @@ public class Favorito {
     private FavoritoId favoritoId;
 
     @ManyToOne
-    @MapsId("usuarioId")
-    @JoinColumn(name = "usuario_id")
+    @MapsId("clienteId")
+    @JoinColumn(name = "cliente_id")
     @JsonIgnore // Impede que o usuário seja serializado dentro do evento
-    private Usuario usuario;
+    private Usuario cliente;
 
     @ManyToOne
     @MapsId("conteudoId")

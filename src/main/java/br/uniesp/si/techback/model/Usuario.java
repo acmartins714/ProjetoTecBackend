@@ -90,7 +90,7 @@ public class Usuario {
     private List<EventoAssistido> eventosAssistidos = new ArrayList<>();
 
     //@JsonManagedReference
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "cliente")
     private List<Favorito> favoritos = new ArrayList<>();
 
 }

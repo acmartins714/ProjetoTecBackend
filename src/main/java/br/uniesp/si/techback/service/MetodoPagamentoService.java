@@ -74,6 +74,24 @@ public class MetodoPagamentoService {
         return metodoPagamentoMapper.toDTO(metodoPagamento);
     }
 
+    public List<MetodoPagamentoDTO> buscaPorNomePortador(String nomePortador) {
+
+        log.info("Buscando todos os métodos de pagamento do portador selecionado: {} ", nomePortador);
+
+        try {
+            List<MetodoPagamento> metodoPagamentos = metodoPagamentoRepository.buscarPorNomePortador(nomePortador);
+            List<MetodoPagamentoDTO> metodoPagamentosDTO = metodoPagamentos.stream()
+                    .map(metodoPagamentoMapper::toDTO)
+                    .collect(Collectors.toList());
+            log.debug("Total dos métodos de pagamento encontrados: {}", metodoPagamentosDTO.size());
+            return metodoPagamentosDTO;
+        } catch (Exception e) {
+            log.error("Falha ao buscar método de pagamento para a chave: {} - {}", nomePortador, e.getMessage(), e);
+            throw e;
+        }
+    }
+
+
     /**
      * Atualiza um método de pagamento existente.
      *

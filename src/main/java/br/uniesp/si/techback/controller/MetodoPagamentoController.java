@@ -48,6 +48,19 @@ public class MetodoPagamentoController {
         }
     }
 
+    @GetMapping("/buscaPorNomePortador")
+    public List<MetodoPagamentoDTO> buscaPorNomePortador(String nomePortador) {
+        log.info("Listando todos os métodos de pagamento para a chave informada: {}", nomePortador);
+        try {
+            List<MetodoPagamentoDTO> metodoPagamentos = metodoPagamentoService.buscaPorNomePortador(nomePortador);
+            log.debug("Total de métodos de pagamento encontrados para a chave: {} - {}", nomePortador, metodoPagamentos.size());
+            return metodoPagamentos;
+        } catch (Exception e) {
+            log.error("Erro ao buscar método de pagamento para a chave: {} - {}", nomePortador, e.getMessage(), e);
+            throw e;
+         }
+    }
+
     @PostMapping
     public ResponseEntity<MetodoPagamentoDTO> criar(@Valid @RequestBody MetodoPagamentoDTO metodoPagamentoDTO) {
         log.info("Recebida requisição para criar novo método de pagamento: {}, para o portador: {}", metodoPagamentoDTO.getId(), metodoPagamentoDTO.getNomePortador());

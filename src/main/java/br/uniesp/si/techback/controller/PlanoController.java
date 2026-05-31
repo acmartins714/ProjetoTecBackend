@@ -24,21 +24,16 @@ public class PlanoController {
 
     @GetMapping
     public List<PlanoDTO> listar() {
-        log.info("Listando todos os planos");
-        List<PlanoDTO> planos = planoService.listar();
-        log.debug("Total de planos encontradas: {}", planos.size());
-        return planos;
+        try {
+            log.info("Listando todos os planos");
+            List<PlanoDTO> planos = planoService.listar();
+            log.debug("Total de planos encontradas: {}", planos.size());
+            return planos;
+        } catch (Exception e) {
+            log.error("Erro ao buscar planos: {}", e.getMessage(), e);
+            throw e;
+        }
     }
-
-    /*
-    @GetMapping("/listarPlanosAssinaturas")
-    public List<PlanoDTO> listarTodosComAssinaturas() {
-        log.info("Listando todos os planos com suas assinaturas");
-        List<PlanoDTO> planos = planoService.listarPlanosAssinaturas();
-        log.debug("Total de planos encontradas: {}", planos.size());
-        return planos;
-    }
-     */
 
     @GetMapping("/listapaginada")
     public ResponseEntity<Page<PlanoDTO>> findAll(Pageable pageable) {
@@ -55,6 +50,19 @@ public class PlanoController {
         } catch (Exception e) {
             log.error("Erro ao buscar plano com ID {}: {}", id, e.getMessage(), e);
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/buscaPorCodigo")
+    public List<PlanoDTO> buscaPorCodigor(String codigo) {
+        try {
+            log.info("Listando todos os planos que correspondão a chave de pesquisa: {}", codigo);
+            List<PlanoDTO> planos = planoService.buscaPorCodigo(codigo);
+            log.debug("Total de planos encontradas: {}", planos.size());
+            return planos;
+        } catch (Exception e) {
+            log.error("Erro ao buscar plano com pela chave: {} - {}", codigo, e.getMessage(), e);
+            throw e;
         }
     }
 

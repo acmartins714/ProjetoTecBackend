@@ -37,23 +37,6 @@ public class PlanoService {
         }
     }
 
-    /*
-    public List<PlanoDTO> listarPlanosAssinaturas() {
-        log.info("Buscando todos os planos cadastrados com as suas assinaturas");
-        try {
-            List<Plano> planos = planoRepository.findAllWithAssinaturas();
-            List<PlanoDTO> planosDTO = planos.stream()
-                    .map(planoMapper::toDTO)
-                    .collect(Collectors.toList());
-            log.debug("Total dos planos encontrados: {}", planosDTO.size());
-            return planosDTO;
-        } catch (Exception e) {
-            log.error("Falha ao buscar planos com as assinaturas: {}", e.getMessage(), e);
-            throw e;
-        }
-    }
-     */
-
     /**
      * @param pageable o json
      *  {
@@ -86,6 +69,23 @@ public class PlanoService {
                     return new RuntimeException(mensagem);
                 });
         return planoMapper.toDTO(plano);
+    }
+
+    public List<PlanoDTO> buscaPorCodigo(String codigo) {
+
+        log.info("Buscando todos os planos pelo código informado: {}.", codigo);
+
+        try {
+            List<Plano> planos = planoRepository.buscaPorCodigo(codigo);
+            List<PlanoDTO> planosDTO = planos.stream()
+                    .map(planoMapper::toDTO)
+                    .collect(Collectors.toList());
+            log.debug("Total dos planos encontrados: {}", planosDTO.size());
+            return planosDTO;
+        } catch (Exception e) {
+            log.error("Falha ao buscar planos com a chave: {}. - {}", codigo, e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**

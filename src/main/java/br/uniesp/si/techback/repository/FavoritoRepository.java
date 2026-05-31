@@ -3,12 +3,13 @@ package br.uniesp.si.techback.repository;
 import br.uniesp.si.techback.dto.FavoritoResponseDTO;
 import br.uniesp.si.techback.model.Favorito;
 import br.uniesp.si.techback.model.FavoritoId;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FavoritoRepository extends JpaRepository<Favorito, FavoritoId> {
@@ -23,10 +24,13 @@ public interface FavoritoRepository extends JpaRepository<Favorito, FavoritoId> 
                 c.ano
             )
             FROM Favorito f
-            JOIN f.usuario u
+            JOIN f.cliente u
             JOIN f.conteudo c
-            WHERE u.id = :usuarioId
+            WHERE u.id = :clienteId
             ORDER BY f.criadoEm DESC
             """)
-    List<FavoritoResponseDTO> listarFavoritoPorUsuario(@Param("usuarioId") Long usuarioId);
+    List<FavoritoResponseDTO> listarFavoritoPorUsuario(@Param("clienteId") Long clienteId);
+
+    Optional<Favorito> findByClienteIdAndConteudoId(Long clienteId, Long conteudoId);
+
 }

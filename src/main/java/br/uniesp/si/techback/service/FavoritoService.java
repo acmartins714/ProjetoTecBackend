@@ -58,10 +58,6 @@ public class FavoritoService {
         log.info("Buscando todos os favoritos cadastrados");
         try {
             List<FavoritoResponseDTO> favoritos = favoritoRepository.listarFavoritoPorUsuario(usuarioId);
-//            List<FavoritoDTO> favoritosDTO = favoritos.stream()
-//                    .map(favoritoMapper::toDTO)
-//                    .collect(Collectors.toList());
-//            log.debug("Total de favoritos encontrados: {}", favoritosDTO.size());
             return favoritos;
         } catch (Exception e) {
             log.error("Falha ao buscar favoritos: {}", e.getMessage(), e);
@@ -90,12 +86,30 @@ public class FavoritoService {
         return favoritoMapper.toDTO(favorito);
     }
 
+    public FavoritoDTO buscarPorUsuarioConteudo(Long clienteId, Long conteudoId) {
+
+        log.info("Buscando favoritos pelo cliente de ID: {} e conteúdo de ID: {}", clienteId, conteudoId);
+
+        Favorito favorito = favoritoRepository.findByClienteIdAndConteudoId(clienteId, conteudoId)
+                .map(favoritoEncontrado -> {
+                    log.debug("Favorito com cliente ID: {} e conteúdo ID: {} encontrado.", clienteId, conteudoId);
+                    return favoritoEncontrado;
+                })
+                .orElseThrow(() -> {
+                    String mensagem = String.format("Favorito com cliente ID: {} e conteúdo ID: {} encontrado.", clienteId, conteudoId);
+                    log.warn(mensagem);
+                    return new RuntimeException(mensagem);
+                });
+        return favoritoMapper.toDTO(favorito);
+    }
+
+
+
     /**
      * Atualiza um favorito existente.
-     *
-     * @param id    o ID do favorito a ser atualizado.
-     * @param favorito com as informações atualizadas.
-     * @return o favorito atualizado.
+     * param id    o ID do favorito a ser atualizado.
+     * param favorito com as informações atualizadas.
+     * return o favorito atualizado.
      */
     @Transactional
     public FavoritoDTO atualizar(FavoritoId id, FavoritoDTO favoritoDTO) {
@@ -126,9 +140,8 @@ public class FavoritoService {
 
     /**
      * Salva um novo favorito.
-     *
-     * @param favorito assistido o favorito a ser salvo.
-     * @return o favorito salvo.
+     * param favorito assistido o favorito a ser salvo.
+     * return o favorito salvo.
      */
     @Transactional
     public FavoritoDTO salvar(FavoritoDTO favoritoDTO) {

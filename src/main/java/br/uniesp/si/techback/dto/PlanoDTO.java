@@ -1,5 +1,6 @@
 package br.uniesp.si.techback.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class PlanoDTO {
     @NotNull(message = "A quantidade de acessos simultaneos do plano deve ser informada!")
     private int streams_simultaneos;
 
+    @JsonIgnore
     private List<AssinaturaDTO> assinaturas;
 
 }

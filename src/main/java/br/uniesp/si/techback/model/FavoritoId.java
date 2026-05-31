@@ -14,6 +14,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Embeddable
 public class FavoritoId implements Serializable {
-    private Long usuarioId;
+    private Long clienteId;
     private Long conteudoId;
 }

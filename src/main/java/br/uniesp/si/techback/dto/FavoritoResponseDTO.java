@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class FavoritoResponseDTO
 {
 
-    private Long usuarioId;
+    private Long clienteId;
     private LocalDateTime criadoEm;
     private String nomeCompleto;
     private String titulo;

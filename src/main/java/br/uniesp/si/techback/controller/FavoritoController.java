@@ -46,17 +46,17 @@ public class FavoritoController {
         return favoritos;
     }
 
-    @GetMapping("/{usuarioId}/{conteudoId}")
-    public ResponseEntity<FavoritoDTO> buscarPorId(@PathVariable Long usuarioId, @PathVariable Long conteudoId) {
+    @GetMapping("/buscaUsuarioConteudo")
+    public ResponseEntity<FavoritoDTO> buscarPorId(Long clienteId, Long conteudoId) {
 
-        FavoritoId id = new FavoritoId(usuarioId, conteudoId);
+        FavoritoId id = new FavoritoId(clienteId, conteudoId);
 
         try {
-            FavoritoDTO favorito = favoritoService.buscarPorId(id);
-            log.debug("Conteúdo encontrado: {}", favorito);
+            FavoritoDTO favorito = favoritoService.buscarPorUsuarioConteudo(id.getClienteId(),id.getClienteId());
+            log.debug("Favorito cliente ID: {} e conteúdo ID: {} Conteúdo encontrado.", id.getClienteId(), id.getConteudoId());
             return ResponseEntity.ok(favorito);
         } catch (Exception e) {
-            log.error("Erro ao buscar conteúdo com ID {}: {}", id, e.getMessage(), e);
+            log.error("Erro ao buscar favorito cliente ID: {} e conteúdo ID: {} -{}.", id.getClienteId(), id.getConteudoId(), e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
     }
