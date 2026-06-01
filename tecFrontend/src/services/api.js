@@ -4,27 +4,34 @@ const api = axios.create({
   baseURL: 'http://localhost:8080',
 });
 
-export const usuarioService = {
-  listar: () => api.get('/usuarios'),
-  buscarPorId: (id) => api.get(`/usuarios/${id}`),
-  salvar: (dados) => api.post('/usuarios', dados),
-  deletar: (id) => api.delete(`/usuarios/${id}`),
+const criarCrudService = (endpoint) => ({
+  listar: () => api.get(endpoint),
+  buscarPorId: (id) => api.get(`${endpoint}/${id}`),
+  salvar: (dados) => api.post(endpoint, dados),
+  atualizar: (id, dados) => api.put(`${endpoint}/${id}`, dados),
+  deletar: (id) => api.delete(`${endpoint}/${id}`),
+});
+
+export const authService = {
+  login: (dados) => api.post('/usuarios/login', dados),
 };
 
-export const conteudoService = {
-  listar: () => api.get('/conteudos'),
-  buscarPorId: (id) => api.get(`/conteudos/${id}`),
-  salvar: (dados) => api.post('/conteudos', dados),
-  deletar: (id) => api.delete(`/conteudos/${id}`),
-};
+export const usuarioService = criarCrudService('/usuarios');
 
-export const funcionarioService = {
-  listar: () => api.get('/funcionarios'),
-  buscarPorId: (id) => api.get(`/funcionarios/${id}`),
-  salvar: (dados) => api.post('/funcionarios', dados),
-  atualizar: (id, dados) => api.put(`/funcionarios/${id}`, dados),
-  deletar: (id) => api.delete(`/funcionarios/${id}`),
-};
+export const conteudoService = criarCrudService('/conteudos');
 
-// Você pode estender para os outros serviços (filmes, planos, assinaturas) seguindo a mesma lógica.
+export const funcionarioService = criarCrudService('/funcionarios');
+
+export const filmeService = criarCrudService('/filmes');
+
+export const planoService = criarCrudService('/planos');
+
+export const assinaturaService = criarCrudService('/assinaturas');
+
+export const metodoPagamentoService = criarCrudService('/metodopagamento');
+
+export const favoritoService = criarCrudService('/favoritos');
+
+export const eventoAssistidoService = criarCrudService('/eventosassistidos');
+
 export default api;

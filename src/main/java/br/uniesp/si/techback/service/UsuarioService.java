@@ -2,9 +2,7 @@ package br.uniesp.si.techback.service;
 
 import br.uniesp.si.techback.client.ViaCepClient;
 import br.uniesp.si.techback.client.RfbClient;
-import br.uniesp.si.techback.dto.RfbApiResponseDTO;
-import br.uniesp.si.techback.dto.UsuarioDTO;
-import br.uniesp.si.techback.dto.ViaCepResponseDTO;
+import br.uniesp.si.techback.dto.*;
 import br.uniesp.si.techback.enuns.TIPOPESSOA;
 import br.uniesp.si.techback.exception.CustomBeanException;
 import br.uniesp.si.techback.mapper.UsuarioMapper;
@@ -31,6 +29,35 @@ public class UsuarioService {
     private final ViaCepClient viaCepClient;
     private final RfbClient rfbClient;
     private final PasswordEncoder passwordEncoder;
+
+    public LoginResponseDTO autenticar(LoginRequestDTO loginRequestDTO) {
+        log.info("Tentativa de login para o e-mail: {}", loginRequestDTO.getEmail());
+
+        Usuario usuario = usuarioRepository.findByEmail(loginRequestDTO.getEmail())
+                .orElseThrow(() -> {
+                    log.warn("Login falhou. Usuário não encontrado: {}", loginRequestDTO.getEmail());
+                    return new RuntimeException("E-mail ou senha inválidos");
+                });
+
+        boolean senhaValida = passwordEncoder.matches(
+                loginRequestDTO.getSenha(),
+                usuario.getSenhaHash()
+        );
+
+        if (!senhaValida) {
+            log.warn("Login falhou. Senha inválida para o e-mail: {}", loginRequestDTO.getEmail());
+            throw new RuntimeException("E-mail ou senha inválidos");
+        }
+
+        log.info("Login realizado com sucesso para o usuário ID: {}", usuario.getId());
+
+        return LoginResponseDTO.builder()
+                .id(usuario.getId())
+                .nomeCompleto(usuario.getNomeCompleto())
+                .email(usuario.getEmail())
+                .perfil(usuario.getPerfil())
+                .build();
+    }
 
     public List<UsuarioDTO> listar() {
         log.info("Buscando todos os usuários cadastrados");

@@ -1,5 +1,7 @@
 package br.uniesp.si.techback.controller;
 
+import br.uniesp.si.techback.dto.LoginRequestDTO;
+import br.uniesp.si.techback.dto.LoginResponseDTO;
 import br.uniesp.si.techback.dto.PlanoDTO;
 import br.uniesp.si.techback.dto.UsuarioDTO;
 import br.uniesp.si.techback.service.UsuarioService;
@@ -24,6 +26,17 @@ import java.util.List;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+        try {
+            LoginResponseDTO usuarioLogado = usuarioService.autenticar(loginRequestDTO);
+            return ResponseEntity.ok(usuarioLogado);
+        } catch (Exception e) {
+            log.warn("Falha no login para o e-mail {}: {}", loginRequestDTO.getEmail(), e.getMessage());
+            return ResponseEntity.status(401).build();
+        }
+    }
 
     @GetMapping
     public List<UsuarioDTO> listar() {

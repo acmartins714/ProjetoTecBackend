@@ -39,7 +39,7 @@ public class Conteudo {
     @Range(min = 1, max = 240)
     private int duracaoMinutos;
 
-    @Column(name = "relevancia", nullable = false, columnDefinition = "NUMBER(4,2)")
+    @Column(name = "relevancia", nullable = false, columnDefinition = "NUMERIC(4,2)")
     @Digits(integer = 2, fraction = 2)
     @DecimalMin(value = "0.00", message = "Relevância deve ser um valor entre 0 e 10")
     @DecimalMax(value = "10.00", message = "Relevância deve ser um valor entre 0 e 10")
